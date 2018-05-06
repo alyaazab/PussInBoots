@@ -1,5 +1,4 @@
-package sample;
-
+package sample.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -31,12 +30,12 @@ public class Controller {
                 {
                     if(gameMap[i][j] == 'W')
                     {
-                        image = new Image(new FileInputStream("C:\\Users\\alya1\\Desktop\\wall.png"));
+                        image = new Image(new FileInputStream("res/wall.png"));
                         System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
                     }
                     else if(gameMap[i][j] == 'E')
                     {
-                        image = new Image(new FileInputStream("C:\\Users\\alya1\\Desktop\\empty.png"));
+                        image = new Image(new FileInputStream("res/empty.png"));
                         System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
 
                     }
@@ -51,7 +50,7 @@ public class Controller {
                 }
             }
 
-            image = new Image(new FileInputStream("C:\\Users\\alya1\\Desktop\\runner.png"));
+            image = new Image(new FileInputStream("res/runner.png"));
 
             runner = new ImageView(image);
 
