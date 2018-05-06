@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import sample.files.FileClass;
 
 import java.io.FileInputStream;
 
@@ -13,10 +14,12 @@ public class Controller {
 
     @FXML
     Pane pane;
-    char [][] gameMap = {{'W', 'W', 'E', 'E'}, {'W', 'W', 'E', 'W'}, {'E', 'E', 'E', 'W'}};
-    int row=2, col=0;
 
-    ImageView img, runner;
+    private FileClass fileClass = new FileClass();
+    private char [][] gameMap = fileClass.getMaze();
+    private int row=2, col=0;
+
+    private ImageView runner;
 
     @FXML
     public void initialize()
@@ -30,17 +33,17 @@ public class Controller {
                 {
                     if(gameMap[i][j] == 'W')
                     {
-                        image = new Image(new FileInputStream("res/wall.png"));
+                        image = new Image(new FileInputStream("res/photos/wall.png"));
                         System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
                     }
                     else if(gameMap[i][j] == 'E')
                     {
-                        image = new Image(new FileInputStream("res/empty.png"));
+                        image = new Image(new FileInputStream("res/photos/empty.png"));
                         System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
 
                     }
 
-                    img = new ImageView(image);
+                    ImageView img = new ImageView(image);
 
                     img.setLayoutX(j*24);
                     img.setLayoutY(i*24);
@@ -50,7 +53,7 @@ public class Controller {
                 }
             }
 
-            image = new Image(new FileInputStream("res/runner.png"));
+            image = new Image(new FileInputStream("res/photos/runner.png"));
 
             runner = new ImageView(image);
 
