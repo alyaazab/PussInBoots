@@ -37,6 +37,6 @@ public class FileClass {
             case 2:
                 return "res/MazeFiles/Maze1";
         }
-        return  " ";
+        return " ";
     }
 }

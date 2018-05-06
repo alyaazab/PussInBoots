@@ -17,7 +17,7 @@ public class Controller {
 
     private FileClass fileClass = new FileClass();
     private char [][] gameMap = fileClass.getMaze();
-    private int row=2, col=0;
+    private int row=29, col=0;
 
     private ImageView runner;
 
@@ -45,8 +45,8 @@ public class Controller {
 
                     ImageView img = new ImageView(image);
 
-                    img.setLayoutX(j*24);
-                    img.setLayoutY(i*24);
+                    img.setLayoutX(j*20);
+                    img.setLayoutY(i*20);
 
                     pane.getChildren().add(img);
 
@@ -58,7 +58,7 @@ public class Controller {
             runner = new ImageView(image);
 
             runner.setLayoutX(0);
-            runner.setLayoutY(48);
+            runner.setLayoutY(29*20);
 
             pane.getChildren().add(runner);
 
@@ -72,7 +72,7 @@ public class Controller {
             if(gameMap[row][col+1] == 'E'){
                 System.out.println("You can move here");
                 col++;
-                runner.setLayoutX(runner.getLayoutX() + 24);
+                runner.setLayoutX(runner.getLayoutX() + 20);
 
             }
             else {
@@ -83,7 +83,7 @@ public class Controller {
             if(gameMap[row][col-1] == 'E'){
                 System.out.println("You can move here");
                 col--;
-                runner.setLayoutX(runner.getLayoutX() - 24);
+                runner.setLayoutX(runner.getLayoutX() - 20);
 
             }
             else {
@@ -94,7 +94,7 @@ public class Controller {
             if(gameMap[row-1][col] == 'E'){
                 System.out.println("You can move here");
                 row--;
-                runner.setLayoutY(runner.getLayoutY() - 24);
+                runner.setLayoutY(runner.getLayoutY() - 20);
 
             }
             else {
@@ -105,7 +105,7 @@ public class Controller {
             if(gameMap[row+1][col] == 'E'){
                 System.out.println("You can move here");
                 row++;
-                runner.setLayoutY(runner.getLayoutY() + 24);
+                runner.setLayoutY(runner.getLayoutY() + 20);
             }
             else {
                 System.out.println("You cannot move here");
