@@ -9,13 +9,13 @@ import java.util.Random;
 public class FileClass {
 
     public char[][] getMaze(){
-        char [][] gameMaze = new char[3][4];
+        char [][] gameMaze = new char[30][30];
         File file = new File(generateRandomFile());
         try {
             BufferedReader bf = new BufferedReader(new FileReader(file));
             String line;
             int l=0;
-            while ((line = bf.readLine()) != null && l < 3) {
+            while ((line = bf.readLine()) != null && l < 30) {
                 System.out.println(line);
                 String [] split = line.split(" ");
                 for(int i = 0; i < split.length; i++){
@@ -35,7 +35,7 @@ public class FileClass {
             case 1:
                 return "res/MazeFiles/Maze1";
             case 2:
-                return "res/MazeFiles/Maze2";
+                return "res/MazeFiles/Maze1";
         }
         return  " ";
     }

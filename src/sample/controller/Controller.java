@@ -27,9 +27,9 @@ public class Controller {
         try{
             Image image = null;
 
-            for(int i=0; i<3; i++)
+            for(int i=0; i<30; i++)
             {
-                for(int j=0; j<4; j++)
+                for(int j=0; j<30; j++)
                 {
                     if(gameMap[i][j] == 'W')
                     {
