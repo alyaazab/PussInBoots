@@ -1,12 +1,17 @@
 package sample.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import sample.files.FileClass;
+import sample.model.Runner;
+import sample.model.items.Item;
+import sample.model.items.ItemFactory;
+import sample.model.observer.InfoPanel;
 
 import java.io.FileInputStream;
 
@@ -15,11 +20,19 @@ public class Controller {
     @FXML
     Pane pane;
 
+    @FXML
+    Label lblMoves;
+
+    InfoPanel infoPanel = InfoPanel.getInstance();
+    Runner runnerObject = Runner.getInstance();
+
     private FileClass fileClass = new FileClass();
     private char [][] gameMap = fileClass.getMaze();
     private int row=29, col=0;
 
     private ImageView runner;
+    Item item;
+    ItemFactory itemFactory = new ItemFactory();
 
     @FXML
     public void initialize()
@@ -41,6 +54,11 @@ public class Controller {
                         image = new Image(new FileInputStream("res/photos/empty.png"));
                         System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
 
+                    }
+                    else if(gameMap[i][j] == 'B' || gameMap[i][j] == 'D')
+                    {
+                        item = itemFactory.createItem(gameMap[i][j]);
+                        image = item.getImage();
                     }
 
                     ImageView img = new ImageView(image);
@@ -74,6 +92,9 @@ public class Controller {
                 col++;
                 runner.setLayoutX(runner.getLayoutX() + 20);
 
+                runnerObject.setCoins(runnerObject.getCoins() + 1);
+                lblMoves.setText(Integer.toString(infoPanel.getCoins()));
+                System.out.println(infoPanel.getCoins());
             }
             else {
                 System.out.println("You cannot move here");
@@ -84,6 +105,10 @@ public class Controller {
                 System.out.println("You can move here");
                 col--;
                 runner.setLayoutX(runner.getLayoutX() - 20);
+
+                runnerObject.setCoins(runnerObject.getCoins() + 1);
+                lblMoves.setText(Integer.toString(infoPanel.getCoins()));
+                System.out.println(infoPanel.getCoins());
 
             }
             else {
@@ -96,6 +121,9 @@ public class Controller {
                 row--;
                 runner.setLayoutY(runner.getLayoutY() - 20);
 
+                runnerObject.setCoins(runnerObject.getCoins() + 1);
+                lblMoves.setText(Integer.toString(infoPanel.getCoins()));
+                System.out.println(infoPanel.getCoins());
             }
             else {
                 System.out.println("You cannot move here");
@@ -106,6 +134,10 @@ public class Controller {
                 System.out.println("You can move here");
                 row++;
                 runner.setLayoutY(runner.getLayoutY() + 20);
+
+                runnerObject.setCoins(runnerObject.getCoins() + 1);
+                lblMoves.setText(Integer.toString(infoPanel.getCoins()));
+                System.out.println(infoPanel.getCoins());
             }
             else {
                 System.out.println("You cannot move here");
