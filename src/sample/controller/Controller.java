@@ -21,7 +21,7 @@ public class Controller {
     Pane pane;
 
     @FXML
-    Label lblMoves;
+    Label lblMoves, lblHealth;
 
     InfoPanel infoPanel = InfoPanel.getInstance();
     Runner runnerObject = Runner.getInstance();
@@ -95,6 +95,16 @@ public class Controller {
                 runnerObject.setCoins(runnerObject.getCoins() + 1);
                 lblMoves.setText(Integer.toString(infoPanel.getCoins()));
                 System.out.println(infoPanel.getCoins());
+            }
+            else if(gameMap[row][col+1] == 'B'){
+                col++;
+                runner.setLayoutX(runner.getLayoutX() + 20);
+
+                //runnerObject.setLives(20);
+                item.change(runnerObject);
+                lblHealth.setText(Integer.toString(infoPanel.getLives()));
+                System.out.println("FOUND A BOMB");
+
             }
             else {
                 System.out.println("You cannot move here");

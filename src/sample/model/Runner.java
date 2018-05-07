@@ -19,6 +19,7 @@ public class Runner implements Subject {
     }
 
     private Runner() {
+        this.lives = 9;
     }
 
     @Override
