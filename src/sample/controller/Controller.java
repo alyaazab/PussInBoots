@@ -10,6 +10,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import sample.files.FileClass;
 import sample.model.Runner;
+import sample.model.Weapons.Gun;
+import sample.model.Weapons.Hand;
+import sample.model.Weapons.Weapon;
 import sample.model.items.Item;
 import sample.model.items.ItemFactory;
 import sample.model.observer.InfoPanel;
@@ -26,6 +29,7 @@ public class Controller {
 
     private InfoPanel infoPanel = InfoPanel.getInstance();
     private Runner runnerObject = Runner.getInstance();
+    private Weapon weapon = null;
 
     private FileClass fileClass = new FileClass();
     private char[][] gameMap = fileClass.getMaze();
@@ -35,6 +39,8 @@ public class Controller {
     private Item item;
     private ItemFactory itemFactory = new ItemFactory();
 
+    private char key = ' ';
+
     private void setUpArray(){
         try {
             Image image;
@@ -43,10 +49,10 @@ public class Controller {
                 for (int j = 0; j < 30; j++) {
                     if (gameMap[i][j] == 'W') {
                         image = new Image(new FileInputStream("res/Photos/wall.png"));
-                        System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
+                        //System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
                     } else if (gameMap[i][j] == 'E') {
                         image = new Image(new FileInputStream("res/Photos/empty.png"));
-                        System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
+                        //System.out.printf("at [%d][%d], %c found\n", i, j, gameMap[i][j]);
                     } else {
                         item = itemFactory.createItem(gameMap[i][j]);
                         image = item.getImage();
@@ -69,6 +75,7 @@ public class Controller {
     }
 
     private void setUpGame(){
+        weapon = new Hand();
         try {
             Image image;
 
@@ -94,6 +101,7 @@ public class Controller {
 
     public void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.D) {
+            key = 'D';
             if (gameMap[row][col + 1] != 'E' && gameMap[row][col + 1] != 'W') {
                 col++;
                 item = itemFactory.createItem(gameMap[row][col]);
@@ -114,6 +122,7 @@ public class Controller {
         }
 
         else if (keyEvent.getCode() == KeyCode.A) {
+            key='A';
             if (gameMap[row][col - 1] != 'E' && gameMap[row][col - 1] != 'W') {
                 col--;
                 item = itemFactory.createItem(gameMap[row][col]);
@@ -135,6 +144,7 @@ public class Controller {
         }
 
         else if (keyEvent.getCode() == KeyCode.W) {
+            key='W';
             if (gameMap[row - 1][col] != 'E' && gameMap[row - 1][col] != 'W') {
                 row--;
                 item = itemFactory.createItem(gameMap[row][col]);
@@ -158,6 +168,7 @@ public class Controller {
         }
 
         else if (keyEvent.getCode() == KeyCode.S) {
+            key='S';
             if (gameMap[row + 1][col] != 'E' && gameMap[row + 1][col] != 'W') {
                 row++;
                 item = itemFactory.createItem(gameMap[row][col]);
@@ -177,6 +188,79 @@ public class Controller {
                 runner.setLayoutY(runner.getLayoutY() + 20);
 
                 updateMoves();
+            }
+        }
+
+        else if(keyEvent.getCode() == KeyCode.NUMPAD1 || keyEvent.getCode() == KeyCode.DIGIT1){
+            weapon = new Hand();
+            System.out.println("Hand selected");
+        }
+
+        else if(keyEvent.getCode() == KeyCode.NUMPAD2 || keyEvent.getCode() == KeyCode.DIGIT2){
+            weapon = new Gun();
+            System.out.println("Gun selected");
+        }
+
+        else if(keyEvent.getCode() == KeyCode.ENTER){
+            if(key=='D'){
+                if(weapon instanceof Hand) {
+                    item = itemFactory.createItem(gameMap[row][col + 1]);
+                    if (item != null) weapon.hit(item);
+                }
+                else {
+                    for (int i = col+1; i < 30; i++) {
+                        if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
+                            weapon.hit(itemFactory.createItem(gameMap[row][i]));
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (key == 'A')
+            {
+                if(weapon instanceof Hand) {
+                    item = itemFactory.createItem(gameMap[row][col - 1]);
+                    if (item != null) weapon.hit(item);
+                }
+                else {
+                    for(int i = col-1; i >= 0; i--){
+                        if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
+                            weapon.hit(itemFactory.createItem(gameMap[row][i]));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            else if(key == 'W')
+            {
+                if(weapon instanceof Hand) {
+                    item = itemFactory.createItem(gameMap[row-1][col]);
+                    if (item != null) weapon.hit(item);
+                }
+                else {
+                    for(int i = row-1; i >=0; i--){
+                        if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
+                            weapon.hit(itemFactory.createItem(gameMap[i][col]));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            else if(key=='S'){
+                if(weapon instanceof Hand) {
+                    item = itemFactory.createItem(gameMap[row+1][col]);
+                    if (item != null) weapon.hit(item);
+                }
+                else {
+                    for(int i = row; i < 30; i++){
+                        if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
+                            weapon.hit(itemFactory.createItem(gameMap[i][col]));
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

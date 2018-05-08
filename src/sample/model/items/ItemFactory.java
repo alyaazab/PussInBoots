@@ -17,6 +17,8 @@ public class ItemFactory {
             case 'D':
                 x='D';
                 return new LivesCoinsBomb();
+            case 'E': case 'W':
+                return null;
             default:
                 return selectItem();
         }
