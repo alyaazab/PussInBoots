@@ -11,6 +11,8 @@ public class Runner implements Subject {
     private int lives;
     private int coins;
     private int score;
+    private int moves;
+
 
     private static Runner ourInstance = new Runner();
 
@@ -24,7 +26,7 @@ public class Runner implements Subject {
 
     @Override
     public void notifyObserver() {
-        infoPanel.update(name,lives ,coins ,score);
+        infoPanel.update(name, lives, coins, moves, score);
     }
 
     public String getName() {
@@ -51,6 +53,15 @@ public class Runner implements Subject {
 
     public void setCoins(int coins) {
         this.coins = coins;
+        notifyObserver();
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
         notifyObserver();
     }
 

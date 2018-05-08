@@ -10,7 +10,7 @@ public class LivesCoinsBomb extends Bomb{
 
     public LivesCoinsBomb(){
         try {
-            img = new Image(new FileInputStream("res/photos/bomb.png"));
+            img = new Image(new FileInputStream("res/photos/bombD.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
