@@ -8,9 +8,9 @@ import sample.model.items.Item;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class BulletGifts extends Gifts{
+public class BulletGift extends Gifts{
 
-    public BulletGifts(){
+    public BulletGift(){
         try {
             img = new Image(new FileInputStream("res/photos/bulletsGift.png"));
         } catch (FileNotFoundException e) {
