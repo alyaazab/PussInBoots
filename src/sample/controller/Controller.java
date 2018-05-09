@@ -1,6 +1,10 @@
 
 package sample.controller;
 
+import javafx.animation.AnimationTimer;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,9 +14,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import sample.files.FileClass;
 import sample.model.Runner;
-import sample.model.Weapons.Gun;
-import sample.model.Weapons.Hand;
-import sample.model.Weapons.Weapon;
+import sample.model.weapons.Gun;
+import sample.model.weapons.Hand;
+import sample.model.weapons.Weapon;
 import sample.model.items.Item;
 import sample.model.items.ItemFactory;
 import sample.model.observer.InfoPanel;
@@ -38,6 +42,7 @@ public class Controller {
     private ImageView runner;
     private Item item;
     private ItemFactory itemFactory = new ItemFactory();
+    private ImageView bullet;
 
     private char key = ' ';
 
@@ -78,7 +83,9 @@ public class Controller {
         weapon = new Hand();
         try {
             Image image;
-
+            bullet = new ImageView(new Image(new FileInputStream("res/Photos/bullet.jpg")));
+            bullet.setFitWidth(10);
+            bullet.setFitHeight(10);
             setUpArray();
 
             image = new Image(new FileInputStream("res/Photos/runner.png"));
@@ -152,8 +159,6 @@ public class Controller {
                 runner.setLayoutY(runner.getLayoutY() - 20);
                 updateLives();
                 updateMoves();
-                setUpArray();
-
 
                 pane.getChildren().remove(runner);
                 setUpArray();
@@ -176,8 +181,6 @@ public class Controller {
                 runner.setLayoutY(runner.getLayoutY() + 20);
                 updateLives();
                 updateMoves();
-                setUpArray();
-
 
                 pane.getChildren().remove(runner);
                 setUpArray();
@@ -223,8 +226,12 @@ public class Controller {
                     if (item != null) weapon.hit(item);
                 }
                 else {
+                    bullet.setLayoutX(runner.getLayoutX());
+                    bullet.setLayoutY(runner.getLayoutY());
+                    pane.getChildren().add(bullet);
                     for(int i = col-1; i >= 0; i--){
                         if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
+                            moveBullet(key,false);
                             weapon.hit(itemFactory.createItem(gameMap[row][i]));
                             break;
                         }
@@ -263,6 +270,33 @@ public class Controller {
                 }
             }
         }
+    }
+
+    private void moveBullet(char key, boolean stop) {
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if(key=='A') {
+                    bullet.setLayoutX(bullet.getLayoutX() - 5);
+                }
+            }
+        };
+        animationTimer.start();
+        bullet.setLayoutX(runner.getLayoutX());
+        bullet.setLayoutY(runner.getLayoutY());
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() {
+                try {
+                    Thread.sleep(500);
+                    System.out.println("SLEEEP");
+                } catch (InterruptedException ignored) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(event -> pane.getChildren().remove(bullet));
+        new Thread(sleeper).start();
     }
 
     private void updateMoves() {
