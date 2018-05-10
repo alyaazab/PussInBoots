@@ -24,6 +24,10 @@ public class LivesBomb extends Bomb {
 
     @Override
     public void change(Runner runner) {
+        if(runner.getArmourValue()) {
+            System.out.println("ANA LABES ARMOUR");
+            return;
+        }
         runner.setLives(runner.getLives()-1);
     }
 }

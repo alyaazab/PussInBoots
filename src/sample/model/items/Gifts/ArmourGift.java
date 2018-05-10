@@ -8,7 +8,7 @@ import sample.model.items.Item;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class ArmourGift extends Gifts {
+public class ArmourGift extends Gift {
 
     public ArmourGift(){
         try {
@@ -27,5 +27,6 @@ public class ArmourGift extends Gifts {
 
     public void change(Runner runner) {
         System.out.println("FOUND AN ARMOUR");
+        setArmourValue();
     }
 }

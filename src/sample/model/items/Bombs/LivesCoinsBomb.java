@@ -23,6 +23,10 @@ public class LivesCoinsBomb extends Bomb{
 
     @Override
     public void change(Runner runner) {
+        if(runner.getArmourValue()) {
+            System.out.println("ANA LABES ARMOUR");
+            return;
+        }
         runner.setLives(runner.getLives()-2);
         runner.setCoins(runner.getCoins()-2);
     }

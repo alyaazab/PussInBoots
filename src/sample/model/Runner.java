@@ -4,7 +4,10 @@ import sample.model.observer.InfoPanel;
 import sample.model.observer.Observer;
 import sample.model.observer.Subject;
 
-public class Runner implements Subject {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class Runner implements Subject, RunnerInterface{
 
     private Observer infoPanel = InfoPanel.getInstance();
     private String name;
@@ -12,6 +15,8 @@ public class Runner implements Subject {
     private int coins;
     private int score;
     private int moves;
+    private boolean armour = false;
+    private Timer timer = new Timer();
 
 
     private static Runner ourInstance = new Runner();
@@ -72,5 +77,26 @@ public class Runner implements Subject {
     public void setScore(int score) {
         this.score = score;
         notifyObserver();
+    }
+
+    @Override
+    public void setArmourValue() {
+        armour=true;
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                armour = false;
+            }
+        };
+        timer.schedule(timerTask, 2000L);
+        if(!armour){
+            timerTask.cancel();
+            timer.cancel();
+        }
+    }
+
+    @Override
+    public boolean getArmourValue() {
+        return this.armour;
     }
 }

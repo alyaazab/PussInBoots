@@ -3,12 +3,11 @@ package sample.model.items.Gifts;
 
 import javafx.scene.image.Image;
 import sample.model.Runner;
-import sample.model.items.Item;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class BulletGift extends Gifts{
+public class BulletGift extends Gift {
 
     public BulletGift(){
         try {
