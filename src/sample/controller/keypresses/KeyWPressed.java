@@ -33,16 +33,15 @@ public class KeyWPressed implements GameState {
 
             maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() - 20);
 
-            maze.getPane().getChildren().remove(maze.getRunner());
-            maze.setUpArray();
-            maze.getPane().getChildren().add(maze.getRunner());
-
+            maze.updateHealth();
+            maze.updateGame();
         } else if (tempMap[tempRow - 1][tempCol] == 'E') {
             System.out.println("You can move here");
             tempRow--;
             maze.setRow(tempRow);
             maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() - 20);
         }
+        maze.updateMoves();
     }
 
     @Override

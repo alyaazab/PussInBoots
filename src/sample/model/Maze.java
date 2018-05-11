@@ -1,11 +1,13 @@
 package sample.model;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import sample.files.FileClass;
 import sample.model.items.Item;
 import sample.model.items.ItemFactory;
+import sample.model.observer.InfoPanel;
 import sample.model.weapons.Hand;
 import sample.model.weapons.Weapon;
 
@@ -24,9 +26,12 @@ public class Maze {
     private ImageView runner;
 
     private Pane pane;
+    private Label lblMoves, lblHealth;
 
     private int row=29;
     private int col=0;
+    private Runner runnerObject = Runner.getInstance();
+    private InfoPanel infoPanel = InfoPanel.getInstance();
 
     public void setUpArray(){
         try {
@@ -157,4 +162,37 @@ public class Maze {
         this.pane = pane;
     }
 
+    public Label getLblMoves() {
+        return lblMoves;
+    }
+
+    public void setLblMoves(Label lblMoves) {
+        this.lblMoves = lblMoves;
+    }
+
+    public Label getLblHealth() {
+        return lblHealth;
+    }
+
+    public void setLblHealth(Label lblHealth) {
+        this.lblHealth = lblHealth;
+    }
+
+    public void updateMoves() {
+        runnerObject.setMoves(runnerObject.getMoves() + 1);
+        getLblMoves().setText(Integer.toString(infoPanel.getMoves()));
+        System.out.println(infoPanel.getMoves());
+    }
+
+    public void updateHealth() {
+        getItem().change(runnerObject);
+        getLblHealth().setText(Integer.toString(infoPanel.getHealth()));
+        System.out.println("updating health");
+    }
+
+    public void updateGame() {
+        getPane().getChildren().remove(getRunner());
+        setUpArray();
+        getPane().getChildren().add(getRunner());
+    }
 }

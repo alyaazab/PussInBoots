@@ -56,16 +56,15 @@ public class KeyDPressed implements GameState {
 
             maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 20);
 
-            maze.getPane().getChildren().remove(maze.getRunner());
-            maze.setUpArray();
-            maze.getPane().getChildren().add(maze.getRunner());
-
+            maze.updateHealth();
+            maze.updateGame();
         } else if (tempMap[tempRow][tempCol + 1] == 'E') {
             System.out.println("You can move here");
             tempCol++;
             maze.setCol(tempCol);
             maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 20);
         }
+        maze.updateMoves();
     }
 
 

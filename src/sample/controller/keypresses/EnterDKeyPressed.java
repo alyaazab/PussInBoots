@@ -76,9 +76,9 @@ public class EnterDKeyPressed implements GameState {
             if (maze.getItem() != null) {
                 if (maze.getWeapon().hit(maze.getItem())) {
                     maze.getGameMap()[maze.getRow()][maze.getCol() + 1] = 'E';
-                    maze.getPane().getChildren().remove(maze.getRunner());
-                    maze.setUpArray();
-                    maze.getPane().getChildren().add(maze.getRunner());
+
+                    maze.updateHealth();
+                    maze.updateGame();
                 }
             }
         } else {
@@ -90,11 +90,12 @@ public class EnterDKeyPressed implements GameState {
 
             for (int i = maze.getCol() + 1; i < 30; i++) {
                 if (maze.getGameMap()[maze.getRow()][i] != 'E' && maze.getGameMap()[maze.getRow()][i] != 'W') {
-                    if (maze.getWeapon().hit(maze.getItemFactory().createItem(maze.getGameMap()[maze.getRow()][i]))) {
+                    maze.setItem(maze.getItemFactory().createItem(maze.getGameMap()[maze.getRow()][i]));
+                    if (maze.getWeapon().hit(maze.getItem())) {
                         maze.getGameMap()[maze.getRow()][i] = 'E';
-                        maze.getPane().getChildren().remove(maze.getRunner());
-                        maze.setUpArray();
-                        maze.getPane().getChildren().add(maze.getRunner());
+
+                        maze.updateHealth();
+                        maze.updateGame();
                     }
                     break;
                 }

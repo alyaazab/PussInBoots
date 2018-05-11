@@ -31,6 +31,8 @@ public class Controller {
     @FXML
     public void initialize() {
         maze.setPane(pane);
+        maze.setLblHealth(lblHealth);
+        maze.setLblMoves(lblMoves);
         maze.setUpGame();
     }
 
