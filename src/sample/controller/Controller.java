@@ -23,10 +23,8 @@ public class Controller {
 
     @FXML
     Label lblMoves, lblHealth;
-
-    private InfoPanel infoPanel = InfoPanel.getInstance();
-    private Runner runnerObject = Runner.getInstance();
     private Maze maze = new Maze();
+    private Game game = new Game(maze);
 
     @FXML
     public void initialize() {
@@ -35,8 +33,6 @@ public class Controller {
         maze.setLblMoves(lblMoves);
         maze.setUpGame();
     }
-
-    private Game game = new Game(maze);
 
     public void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.D) {
@@ -96,23 +92,4 @@ public class Controller {
 //
 //        new Thread(sleeper).start();
 //    }
-
-    private void updateMoves() {
-        runnerObject.setMoves(runnerObject.getMoves() + 1);
-        lblMoves.setText(Integer.toString(infoPanel.getMoves()));
-        System.out.println(infoPanel.getMoves());
-    }
-
-    private void updateHealth() {
-        maze.getItem().change(runnerObject);
-        lblHealth.setText(Integer.toString(infoPanel.getHealth()));
-        System.out.println("updating health");
-    }
-
-    private void updateGame() {
-        pane.getChildren().remove(maze.getRunner());
-        maze.setUpArray();
-        pane.getChildren().add(maze.getRunner());
-    }
-
 }
