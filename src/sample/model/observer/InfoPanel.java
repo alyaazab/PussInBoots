@@ -7,6 +7,7 @@ public class InfoPanel implements Observer {
     private int coins;
     private int score;
     private int moves;
+    private int bullets;
 
     private static InfoPanel ourInstance = new InfoPanel();
 
@@ -18,12 +19,13 @@ public class InfoPanel implements Observer {
     }
 
     @Override
-    public void update(String name, int health, int coins, int moves, int score) {
+    public void update(String name, int health, int coins, int moves, int score, int bullets) {
         this.name = name;
         this.health = health;
         this.coins =  coins;
         this.moves = moves;
         this.score = score;
+        this.bullets = bullets;
     }
 
     public String getName() {
@@ -41,7 +43,12 @@ public class InfoPanel implements Observer {
     public int getMoves() {
         return moves;
     }
+
     public int getScore() {
         return score;
+    }
+
+    public int getBullets() {
+        return bullets;
     }
 }

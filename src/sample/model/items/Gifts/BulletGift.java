@@ -25,6 +25,7 @@ public class BulletGift extends Gift {
 
 
     public void change(Runner runner) {
-        System.out.println("FOUND A BULLET");
+        runner = Runner.getInstance();
+        runner.setBullets(runner.getBullets()+2);
     }
 }

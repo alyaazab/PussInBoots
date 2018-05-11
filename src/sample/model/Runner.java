@@ -33,7 +33,7 @@ public class Runner implements Subject, RunnerInterface{
 
     @Override
     public void notifyObserver() {
-        infoPanel.update(name, health, coins, moves, score);
+        infoPanel.update(name, health, coins, moves, score, bullets);
     }
 
     public String getName() {
@@ -87,6 +87,7 @@ public class Runner implements Subject, RunnerInterface{
 
     public void setBullets(int bullets){
         this.bullets = bullets;
+        notifyObserver();
     }
     @Override
     public void setArmourValue(Item i) {
