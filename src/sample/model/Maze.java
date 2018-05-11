@@ -13,20 +13,20 @@ import java.io.FileInputStream;
 
 public class Maze {
 
-    FileClass fileClass = new FileClass();
-    char[][] gameMap = fileClass.getMaze();
+    private FileClass fileClass = new FileClass();
+    private char[][] gameMap = fileClass.getMaze();
 
-    Item item = null;
-    ItemFactory itemFactory = new ItemFactory();
+    private Item item = null;
+    private ItemFactory itemFactory = new ItemFactory();
 
     private Weapon weapon = null;
     private ImageView bullet;
     private ImageView runner;
 
-    Pane pane;
+    private Pane pane;
 
-    int row=29;
-    int col=0;
+    private int row=29;
+    private int col=0;
 
     public void setUpArray(){
         try {

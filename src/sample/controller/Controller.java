@@ -1,28 +1,20 @@
 
 package sample.controller;
 
-import javafx.animation.AnimationTimer;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import sample.files.FileClass;
+import sample.controller.keypresses.KeyAPressed;
+import sample.controller.keypresses.KeyDPressed;
+import sample.controller.keypresses.KeySPressed;
+import sample.controller.keypresses.KeyWPressed;
 import sample.model.Maze;
 import sample.model.Runner;
+import sample.model.observer.InfoPanel;
 import sample.model.weapons.Gun;
 import sample.model.weapons.Hand;
-import sample.model.weapons.Weapon;
-import sample.model.items.Item;
-import sample.model.items.ItemFactory;
-import sample.model.observer.InfoPanel;
-
-import java.io.FileInputStream;
 
 public class Controller {
 
@@ -34,38 +26,7 @@ public class Controller {
 
     private InfoPanel infoPanel = InfoPanel.getInstance();
     private Runner runnerObject = Runner.getInstance();
-//    private Weapon weapon = null;
-
-
-//    private ImageView runner;
-//    private ImageView bullet;
-
-    private char key = ' ';
-
-    Maze maze = new Maze();
-
-
-//    private void setUpGame(){
-//        weapon = new Hand();
-//        try {
-//            Image image;
-//            bullet = new ImageView(new Image(new FileInputStream("res/Photos/bullet.jpg")));
-//            bullet.setFitWidth(10);
-//            bullet.setFitHeight(10);
-//            maze.setUpArray(pane);
-//
-//            image = new Image(new FileInputStream("res/Photos/runner.png"));
-//
-//            runner = new ImageView(image);
-//            runner.setLayoutX(0);
-//            runner.setLayoutY(29 * 20);
-//
-//            pane.getChildren().add(runner);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private Maze maze = new Maze();
 
     @FXML
     public void initialize() {
@@ -73,173 +34,33 @@ public class Controller {
         maze.setUpGame();
     }
 
-    Game game = new Game(maze);
+    private Game game = new Game(maze);
 
     public void onKeyPressed(KeyEvent keyEvent) {
-        updateHealth();
-        updateMoves();
-
         if (keyEvent.getCode() == KeyCode.D) {
-            key = 'D';
-            game.keyDPressed(maze);
-
+            game.keyDPressed();
+        } else if (keyEvent.getCode() == KeyCode.A) {
+            game.keyAPressed();
         } else if (keyEvent.getCode() == KeyCode.W) {
-            key = 'W';
             game.keyWPressed();
-//            if (gameMap[row - 1][col] != 'E' && gameMap[row - 1][col] != 'W') {
-//                row--;
-//                item = itemFactory.createItem(gameMap[row][col]);
-//                gameMap[row][col] = 'E';
-//                runner.setLayoutY(runner.getLayoutY() - 20);
-//                updateHealth();
-//                updateMoves();
-//
-//                updateGame();
-//            } else if (gameMap[row - 1][col] == 'E') {
-//                System.out.println("You can move here");
-//                row--;
-//                runner.setLayoutY(runner.getLayoutY() - 20);
-//
-//                updateMoves();
-//            }
-//        } else if (keyEvent.getCode() == KeyCode.S) {
-//            key = 'S';
-//            if (gameMap[row + 1][col] != 'E' && gameMap[row + 1][col] != 'W') {
-//                row++;
-//                item = itemFactory.createItem(gameMap[row][col]);
-//                gameMap[row][col] = 'E';
-//                runner.setLayoutY(runner.getLayoutY() + 20);
-//                updateHealth();
-//                updateMoves();
-//
-//                updateGame();
-//            } else if (gameMap[row + 1][col] == 'E') {
-//                System.out.println("You can move here");
-//                row++;
-//                runner.setLayoutY(runner.getLayoutY() + 20);
-//
-//                updateMoves();
-//            }
-//        } else if (keyEvent.getCode() == KeyCode.NUMPAD1 || keyEvent.getCode() == KeyCode.DIGIT1) {
-//            weapon = new Hand();
-//            System.out.println("Hand selected");
-//        } else if (keyEvent.getCode() == KeyCode.NUMPAD2 || keyEvent.getCode() == KeyCode.DIGIT2) {
-//            weapon = new Gun();
-//            System.out.println("Gun selected");
-//        }
-//        else if (keyEvent.getCode() == KeyCode.ENTER) {
-//            if (key == 'D') {
-//                if (weapon instanceof Hand) {
-//                    item = itemFactory.createItem(gameMap[row][col + 1]);
-//                    if (item != null){
-//                        if(weapon.hit(item)) {
-//                            gameMap[row][col + 1] = 'E';
-//                            updateGame();
-//                        }
-//                    }
-//                } else {
-//                    bullet.setLayoutX(runner.getLayoutX());
-//                    bullet.setLayoutY(runner.getLayoutY());
-//                    pane.getChildren().add(bullet);
-//                    runnerObject.setBullets(runnerObject.getBullets()-1);
-//                    System.out.println("bullets = " + runnerObject.getBullets());
-//
-//                    for (int i = col + 1; i < 30; i++) {
-//                        if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
-//                            moveBullet(key, false);
-//                            if(weapon.hit(itemFactory.createItem(gameMap[row][i]))){
-//                                gameMap[row][i] = 'E';
-//                                updateGame();
-//                            }
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//            else if (key == 'A') {
-//                    System.out.println("key=A");
-//                    if (weapon instanceof Hand) {
-//                        item = itemFactory.createItem(gameMap[row][col - 1]);
-//                        if (item != null) {
-//                            if(weapon.hit(item)) {
-//                                gameMap[row][col - 1] = 'E';
-//                                updateGame();
-//                            }
-//                        }
-//                    } else {
-//                        bullet.setLayoutX(runner.getLayoutX());
-//                        bullet.setLayoutY(runner.getLayoutY());
-//                        pane.getChildren().add(bullet);
-//
-//                        runnerObject.setBullets(runnerObject.getBullets()-1);
-//
-//                        for (int i = col - 1; i >= 0; i--) {
-//                            if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
-//                                moveBullet(key, false);
-//                                if(weapon.hit(itemFactory.createItem(gameMap[row][i]))){
-//                                    gameMap[row][i] = 'E';
-//                                    updateGame();
-//                                }
-//                                break;
-//                            }
-//                        }
-//                    }
-//                } else if (key == 'W') {
-//                    if (weapon instanceof Hand) {
-//                        item = itemFactory.createItem(gameMap[row - 1][col]);
-//                        if (item != null){
-//                            if(weapon.hit(item)) {
-//                                gameMap[row - 1][col] = 'E';
-//                                updateGame();
-//                            }
-//                        }
-//                    } else {
-//                        bullet.setLayoutX(runner.getLayoutX());
-//                        bullet.setLayoutY(runner.getLayoutY());
-//                        pane.getChildren().add(bullet);
-//
-//                        runnerObject.setBullets(runnerObject.getBullets()-1);
-//
-//                        for (int i = row - 1; i >= 0; i--) {
-//                            if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
-//                                moveBullet(key, false);
-//                                if(weapon.hit(itemFactory.createItem(gameMap[i][col]))){
-//                                    gameMap[i][col] = 'E';
-//                                    updateGame();
-//                                }
-//                                break;
-//                            }
-//                        }
-//                    }
-//                } else if (key == 'S') {
-//                    if (weapon instanceof Hand) {
-//                        item = itemFactory.createItem(gameMap[row + 1][col]);
-//                        if (item != null) {
-//                           if(weapon.hit(item)) {
-//                                gameMap[row + 1][col] = 'E';
-//                                updateGame();
-//                            }
-//                        }
-//                    } else {
-//                        bullet.setLayoutX(runner.getLayoutX());
-//                        bullet.setLayoutY(runner.getLayoutY());
-//                        pane.getChildren().add(bullet);
-//
-//                        runnerObject.setBullets(runnerObject.getBullets()-1);
-//
-//                        for (int i = row; i < 30; i++) {
-//                            if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
-//                                moveBullet(key, false);
-//                                if(weapon.hit(itemFactory.createItem(gameMap[i][col]))){
-//                                    gameMap[i][col] = 'E';
-//                                    updateGame();
-//                                }
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+        } else if (keyEvent.getCode() == KeyCode.S) {
+            game.keySPressed();
+        } else if (keyEvent.getCode() == KeyCode.NUMPAD1 || keyEvent.getCode() == KeyCode.DIGIT1) {
+            maze.setWeapon(new Hand());
+            System.out.println("Hand selected");
+        } else if (keyEvent.getCode() == KeyCode.NUMPAD2 || keyEvent.getCode() == KeyCode.DIGIT2) {
+            maze.setWeapon(new Gun());
+            System.out.println("Gun selected");
+        } else if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (game.getGameState() instanceof KeyDPressed) {
+                game.keyEnterDPressed();
+            } else if (game.getGameState() instanceof KeyAPressed) {
+                game.keyEnterAPressed();
+            } else if (game.getGameState() instanceof KeySPressed) {
+                game.keyEnterSPressed();
+            } else if (game.getGameState() instanceof KeyWPressed) {
+                game.keyEnterWPressed();
+            }
         }
     }
 
@@ -286,7 +107,7 @@ public class Controller {
         System.out.println("updating health");
     }
 
-    private void updateGame(){
+    private void updateGame() {
         pane.getChildren().remove(maze.getRunner());
         maze.setUpArray();
         pane.getChildren().add(maze.getRunner());
