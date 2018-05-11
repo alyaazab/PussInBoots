@@ -136,9 +136,7 @@ public class Controller {
                 updateHealth();
                 updateMoves();
 
-                pane.getChildren().remove(runner);
-                setUpArray();
-                pane.getChildren().add(runner);
+                updateGame();
             } else if (gameMap[row][col - 1] == 'E') {
                 System.out.println("You can move here");
                 col--;
@@ -156,9 +154,7 @@ public class Controller {
                 updateHealth();
                 updateMoves();
 
-                pane.getChildren().remove(runner);
-                setUpArray();
-                pane.getChildren().add(runner);
+                updateGame();
             } else if (gameMap[row - 1][col] == 'E') {
                 System.out.println("You can move here");
                 row--;
@@ -176,9 +172,7 @@ public class Controller {
                 updateHealth();
                 updateMoves();
 
-                pane.getChildren().remove(runner);
-                setUpArray();
-                pane.getChildren().add(runner);
+                updateGame();
             } else if (gameMap[row + 1][col] == 'E') {
                 System.out.println("You can move here");
                 row++;
@@ -192,11 +186,17 @@ public class Controller {
         } else if (keyEvent.getCode() == KeyCode.NUMPAD2 || keyEvent.getCode() == KeyCode.DIGIT2) {
             weapon = new Gun();
             System.out.println("Gun selected");
-        } else if (keyEvent.getCode() == KeyCode.ENTER) {
+        }
+        else if (keyEvent.getCode() == KeyCode.ENTER) {
             if (key == 'D') {
                 if (weapon instanceof Hand) {
                     item = itemFactory.createItem(gameMap[row][col + 1]);
-                    if (item != null) weapon.hit(item);
+                    if (item != null){
+                        if(weapon.hit(item)) {
+                            gameMap[row][col + 1] = 'E';
+                            updateGame();
+                        }
+                    }
                 } else {
                     bullet.setLayoutX(runner.getLayoutX());
                     bullet.setLayoutY(runner.getLayoutY());
@@ -207,7 +207,10 @@ public class Controller {
                     for (int i = col + 1; i < 30; i++) {
                         if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
                             moveBullet(key, false);
-                            weapon.hit(itemFactory.createItem(gameMap[row][i]));
+                            if(weapon.hit(itemFactory.createItem(gameMap[row][i]))){
+                                gameMap[row][i] = 'E';
+                                updateGame();
+                            }
                             break;
                         }
                     }
@@ -217,7 +220,12 @@ public class Controller {
                     System.out.println("key=A");
                     if (weapon instanceof Hand) {
                         item = itemFactory.createItem(gameMap[row][col - 1]);
-                        if (item != null) weapon.hit(item);
+                        if (item != null) {
+                            if(weapon.hit(item)) {
+                                gameMap[row][col - 1] = 'E';
+                                updateGame();
+                            }
+                        }
                     } else {
                         bullet.setLayoutX(runner.getLayoutX());
                         bullet.setLayoutY(runner.getLayoutY());
@@ -228,7 +236,10 @@ public class Controller {
                         for (int i = col - 1; i >= 0; i--) {
                             if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
                                 moveBullet(key, false);
-                                weapon.hit(itemFactory.createItem(gameMap[row][i]));
+                                if(weapon.hit(itemFactory.createItem(gameMap[row][i]))){
+                                    gameMap[row][i] = 'E';
+                                    updateGame();
+                                }
                                 break;
                             }
                         }
@@ -236,7 +247,12 @@ public class Controller {
                 } else if (key == 'W') {
                     if (weapon instanceof Hand) {
                         item = itemFactory.createItem(gameMap[row - 1][col]);
-                        if (item != null) weapon.hit(item);
+                        if (item != null){
+                            if(weapon.hit(item)) {
+                                gameMap[row - 1][col] = 'E';
+                                updateGame();
+                            }
+                        }
                     } else {
                         bullet.setLayoutX(runner.getLayoutX());
                         bullet.setLayoutY(runner.getLayoutY());
@@ -247,7 +263,10 @@ public class Controller {
                         for (int i = row - 1; i >= 0; i--) {
                             if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
                                 moveBullet(key, false);
-                                weapon.hit(itemFactory.createItem(gameMap[i][col]));
+                                if(weapon.hit(itemFactory.createItem(gameMap[i][col]))){
+                                    gameMap[i][col] = 'E';
+                                    updateGame();
+                                }
                                 break;
                             }
                         }
@@ -255,7 +274,12 @@ public class Controller {
                 } else if (key == 'S') {
                     if (weapon instanceof Hand) {
                         item = itemFactory.createItem(gameMap[row + 1][col]);
-                        if (item != null) weapon.hit(item);
+                        if (item != null) {
+                           if(weapon.hit(item)) {
+                                gameMap[row + 1][col] = 'E';
+                                updateGame();
+                            }
+                        }
                     } else {
                         bullet.setLayoutX(runner.getLayoutX());
                         bullet.setLayoutY(runner.getLayoutY());
@@ -266,7 +290,10 @@ public class Controller {
                         for (int i = row; i < 30; i++) {
                             if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
                                 moveBullet(key, false);
-                                weapon.hit(itemFactory.createItem(gameMap[i][col]));
+                                if(weapon.hit(itemFactory.createItem(gameMap[i][col]))){
+                                    gameMap[i][col] = 'E';
+                                    updateGame();
+                                }
                                 break;
                             }
                         }
@@ -291,10 +318,6 @@ public class Controller {
             }
         };
         animationTimer.start();
-
-        bullet.setLayoutX(runner.getLayoutX());
-        bullet.setLayoutY(runner.getLayoutY());
-
         Task<Void> sleeper = new Task<Void>() {
             @Override
             protected Void call() {
@@ -321,6 +344,12 @@ public class Controller {
         item.change(runnerObject);
         lblHealth.setText(Integer.toString(infoPanel.getHealth()));
         System.out.println("FOUND A BOMB");
+    }
+
+    private void updateGame(){
+        pane.getChildren().remove(runner);
+        setUpArray();
+        pane.getChildren().add(runner);
     }
 
 }
