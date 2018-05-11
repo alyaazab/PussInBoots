@@ -1,15 +1,20 @@
 package sample.controller;
 
+import javafx.scene.layout.Pane;
+import sample.model.Maze;
+
 public class Game {
 
     GameState keyWPressed;
+    GameState keyAPressed;
+    GameState keySPressed;
     GameState keyDPressed;
 
     GameState gameState;
 
-    public Game() {
-        keyWPressed = new KeyWPressed(this);
-        keyDPressed = new KeyDPressed(this);
+    public Game(Maze maze) {
+        keyWPressed = new KeyWPressed(this, maze);
+        keyDPressed = new KeyDPressed(this, maze);
         gameState = keyDPressed;
     }
 
@@ -39,13 +44,11 @@ public class Game {
     }
 
 
-    public void keyDPressed() {
-        //keyDPressed.keyPressed();
+    public void keyDPressed(Maze maze) {
         gameState.keyDPressed();
     }
 
     public void keyWPressed() {
-        //keyWPressed.keyPressed();
         gameState.keyWPressed();
     }
 

@@ -1,5 +1,7 @@
 package sample.controller;
 
+import sample.model.Maze;
+
 public interface GameState {
 
     void keyWPressed();

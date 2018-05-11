@@ -1,11 +1,15 @@
 package sample.controller;
 
+import sample.model.Maze;
+
 public class KeyWPressed implements GameState {
 
     Game game;
+    Maze maze;
 
-    public KeyWPressed(Game game) {
+    public KeyWPressed(Game game, Maze maze) {
         this.game = game;
+        this.maze = maze;
     }
 
     @Override
