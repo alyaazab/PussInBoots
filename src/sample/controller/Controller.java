@@ -104,28 +104,32 @@ public class Controller {
         setUpGame();
     }
 
+    Game game = new Game();
+
     public void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.D) {
             key = 'D';
-            if (gameMap[row][col + 1] != 'E' && gameMap[row][col + 1] != 'W') {
+            game.keyDPressed();
 
-                col++;
-                item = itemFactory.createItem(gameMap[row][col]);
-                gameMap[row][col] = 'E';
-                runner.setLayoutX(runner.getLayoutX() + 20);
-                updateHealth();
-                updateMoves();
-
-                pane.getChildren().remove(runner);
-                setUpArray();
-                pane.getChildren().add(runner);
-
-            } else if (gameMap[row][col + 1] == 'E') {
-                System.out.println("You can move here");
-                col++;
-                runner.setLayoutX(runner.getLayoutX() + 20);
-                updateMoves();
-            }
+            //            if (gameMap[row][col + 1] != 'E' && gameMap[row][col + 1] != 'W') {
+//
+//                col++;
+//                item = itemFactory.createItem(gameMap[row][col]);
+//                gameMap[row][col] = 'E';
+//                runner.setLayoutX(runner.getLayoutX() + 20);
+//                updateHealth();
+//                updateMoves();
+//
+//                pane.getChildren().remove(runner);
+//                setUpArray();
+//                pane.getChildren().add(runner);
+//
+//            } else if (gameMap[row][col + 1] == 'E') {
+//                System.out.println("You can move here");
+//                col++;
+//                runner.setLayoutX(runner.getLayoutX() + 20);
+//                updateMoves();
+//            }
         } else if (keyEvent.getCode() == KeyCode.A) {
             key = 'A';
             if (gameMap[row][col - 1] != 'E' && gameMap[row][col - 1] != 'W') {
@@ -146,22 +150,23 @@ public class Controller {
             }
         } else if (keyEvent.getCode() == KeyCode.W) {
             key = 'W';
-            if (gameMap[row - 1][col] != 'E' && gameMap[row - 1][col] != 'W') {
-                row--;
-                item = itemFactory.createItem(gameMap[row][col]);
-                gameMap[row][col] = 'E';
-                runner.setLayoutY(runner.getLayoutY() - 20);
-                updateHealth();
-                updateMoves();
-
-                updateGame();
-            } else if (gameMap[row - 1][col] == 'E') {
-                System.out.println("You can move here");
-                row--;
-                runner.setLayoutY(runner.getLayoutY() - 20);
-
-                updateMoves();
-            }
+            game.keyWPressed();
+//            if (gameMap[row - 1][col] != 'E' && gameMap[row - 1][col] != 'W') {
+//                row--;
+//                item = itemFactory.createItem(gameMap[row][col]);
+//                gameMap[row][col] = 'E';
+//                runner.setLayoutY(runner.getLayoutY() - 20);
+//                updateHealth();
+//                updateMoves();
+//
+//                updateGame();
+//            } else if (gameMap[row - 1][col] == 'E') {
+//                System.out.println("You can move here");
+//                row--;
+//                runner.setLayoutY(runner.getLayoutY() - 20);
+//
+//                updateMoves();
+//            }
         } else if (keyEvent.getCode() == KeyCode.S) {
             key = 'S';
             if (gameMap[row + 1][col] != 'E' && gameMap[row + 1][col] != 'W') {
