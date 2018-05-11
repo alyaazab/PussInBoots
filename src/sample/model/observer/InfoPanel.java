@@ -3,7 +3,7 @@ package sample.model.observer;
 public class InfoPanel implements Observer {
 
     private String name;
-    private int lives;
+    private int health;
     private int coins;
     private int score;
     private int moves;
@@ -18,9 +18,9 @@ public class InfoPanel implements Observer {
     }
 
     @Override
-    public void update(String name, int lives, int coins, int moves, int score) {
+    public void update(String name, int health, int coins, int moves, int score) {
         this.name = name;
-        this.lives = lives;
+        this.health = health;
         this.coins =  coins;
         this.moves = moves;
         this.score = score;
@@ -30,8 +30,8 @@ public class InfoPanel implements Observer {
         return name;
     }
 
-    public int getLives() {
-        return lives;
+    public int getHealth() {
+        return health;
     }
 
     public int getCoins() {

@@ -1,5 +1,6 @@
 package sample.model;
 
+import sample.model.items.Item;
 import sample.model.observer.InfoPanel;
 import sample.model.observer.Observer;
 import sample.model.observer.Subject;
@@ -11,11 +12,12 @@ public class Runner implements Subject, RunnerInterface{
 
     private Observer infoPanel = InfoPanel.getInstance();
     private String name;
-    private int lives;
+    private int health;
     private int coins;
     private int score;
     private int moves;
-    private boolean armour = false;
+    private int bullets = 6;
+    private Item item;
     private Timer timer = new Timer();
 
 
@@ -26,12 +28,12 @@ public class Runner implements Subject, RunnerInterface{
     }
 
     private Runner() {
-        this.lives = 9;
+        this.health = 9;
     }
 
     @Override
     public void notifyObserver() {
-        infoPanel.update(name, lives, coins, moves, score);
+        infoPanel.update(name, health, coins, moves, score);
     }
 
     public String getName() {
@@ -43,12 +45,12 @@ public class Runner implements Subject, RunnerInterface{
         notifyObserver();
     }
 
-    public int getLives() {
-        return lives;
+    public int getHealth() {
+        return health;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void setHealth(int health) {
+        this.health = health;
         notifyObserver();
     }
 
@@ -79,24 +81,31 @@ public class Runner implements Subject, RunnerInterface{
         notifyObserver();
     }
 
+    public int getBullets(){
+        return bullets;
+    }
+
+    public void setBullets(int bullets){
+        this.bullets = bullets;
+    }
     @Override
-    public void setArmourValue() {
-        armour=true;
+    public void setArmourValue(Item i) {
+        item = i;
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                armour = false;
+                item = null;
             }
         };
         timer.schedule(timerTask, 2000L);
-        if(!armour){
+        if(item==null){
             timerTask.cancel();
             timer.cancel();
         }
     }
 
     @Override
-    public boolean getArmourValue() {
-        return this.armour;
+    public Item getArmourValue() {
+        return this.item;
     }
 }

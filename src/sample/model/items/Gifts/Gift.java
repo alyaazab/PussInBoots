@@ -12,13 +12,13 @@ abstract class Gift implements Item, RunnerInterface {
     private RunnerInterface runner = Runner.getInstance();
 
     @Override
-    public void setArmourValue()
+    public void setArmourValue(Item item)
     {
-        runner.setArmourValue();
+        runner.setArmourValue(item);
     }
 
     @Override
-    public boolean getArmourValue() {
+    public Item getArmourValue() {
         return runner.getArmourValue();
     }
 }

@@ -25,6 +25,6 @@ public class LivesGift extends Gift {
 
     @Override
     public void change(Runner runner) {
-        runner.setLives(runner.getLives()+1);
+        runner.setHealth(runner.getHealth()+1);
     }
 }

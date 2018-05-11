@@ -27,6 +27,6 @@ public class ArmourGift extends Gift {
 
     public void change(Runner runner) {
         System.out.println("FOUND AN ARMOUR");
-        setArmourValue();
+        setArmourValue(this);
     }
 }

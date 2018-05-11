@@ -113,7 +113,7 @@ public class Controller {
                 item = itemFactory.createItem(gameMap[row][col]);
                 gameMap[row][col] = 'E';
                 runner.setLayoutX(runner.getLayoutX() + 20);
-                updateLives();
+                updateHealth();
                 updateMoves();
 
                 pane.getChildren().remove(runner);
@@ -133,7 +133,7 @@ public class Controller {
                 item = itemFactory.createItem(gameMap[row][col]);
                 gameMap[row][col] = 'E';
                 runner.setLayoutX(runner.getLayoutX() - 20);
-                updateLives();
+                updateHealth();
                 updateMoves();
 
                 pane.getChildren().remove(runner);
@@ -153,7 +153,7 @@ public class Controller {
                 item = itemFactory.createItem(gameMap[row][col]);
                 gameMap[row][col] = 'E';
                 runner.setLayoutY(runner.getLayoutY() - 20);
-                updateLives();
+                updateHealth();
                 updateMoves();
 
                 pane.getChildren().remove(runner);
@@ -173,7 +173,7 @@ public class Controller {
                 item = itemFactory.createItem(gameMap[row][col]);
                 gameMap[row][col] = 'E';
                 runner.setLayoutY(runner.getLayoutY() + 20);
-                updateLives();
+                updateHealth();
                 updateMoves();
 
                 pane.getChildren().remove(runner);
@@ -201,6 +201,8 @@ public class Controller {
                     bullet.setLayoutX(runner.getLayoutX());
                     bullet.setLayoutY(runner.getLayoutY());
                     pane.getChildren().add(bullet);
+                    runnerObject.setBullets(runnerObject.getBullets()-1);
+                    System.out.println("bullets = " + runnerObject.getBullets());
 
                     for (int i = col + 1; i < 30; i++) {
                         if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
@@ -221,6 +223,8 @@ public class Controller {
                         bullet.setLayoutY(runner.getLayoutY());
                         pane.getChildren().add(bullet);
 
+                        runnerObject.setBullets(runnerObject.getBullets()-1);
+
                         for (int i = col - 1; i >= 0; i--) {
                             if (gameMap[row][i] != 'E' && gameMap[row][i] != 'W') {
                                 moveBullet(key, false);
@@ -238,6 +242,8 @@ public class Controller {
                         bullet.setLayoutY(runner.getLayoutY());
                         pane.getChildren().add(bullet);
 
+                        runnerObject.setBullets(runnerObject.getBullets()-1);
+
                         for (int i = row - 1; i >= 0; i--) {
                             if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
                                 moveBullet(key, false);
@@ -254,6 +260,8 @@ public class Controller {
                         bullet.setLayoutX(runner.getLayoutX());
                         bullet.setLayoutY(runner.getLayoutY());
                         pane.getChildren().add(bullet);
+
+                        runnerObject.setBullets(runnerObject.getBullets()-1);
 
                         for (int i = row; i < 30; i++) {
                             if (gameMap[i][col] != 'E' && gameMap[i][col] != 'W') {
@@ -309,9 +317,9 @@ public class Controller {
         System.out.println(infoPanel.getMoves());
     }
 
-    private void updateLives() {
+    private void updateHealth() {
         item.change(runnerObject);
-        lblHealth.setText(Integer.toString(infoPanel.getLives()));
+        lblHealth.setText(Integer.toString(infoPanel.getHealth()));
         System.out.println("FOUND A BOMB");
     }
 
