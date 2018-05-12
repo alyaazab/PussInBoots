@@ -7,6 +7,8 @@ import javafx.scene.layout.Pane;
 import sample.files.FileClass;
 import sample.model.items.Item;
 import sample.model.items.ItemFactory;
+import sample.model.memento.CareTaker;
+import sample.model.memento.Originator;
 import sample.model.observer.InfoPanel;
 import sample.model.weapons.Hand;
 import sample.model.weapons.Weapon;
@@ -33,6 +35,10 @@ public class Maze {
     private Runner runnerObject = Runner.getInstance();
     private InfoPanel infoPanel = InfoPanel.getInstance();
 
+    private CareTaker careTaker = new CareTaker();
+    private Originator originator = new Originator();
+    public static int index=-1;
+
     public void setUpArray(){
         try {
             Image image;
@@ -41,7 +47,7 @@ public class Maze {
                 for (int j = 0; j < 30; j++) {
                     if (gameMap[i][j] == 'W') {
                         image = new Image(new FileInputStream("res/Photos/wall.png"));
-                    } else if (gameMap[i][j] == 'E') {
+                    } else if (gameMap[i][j] == 'E' || gameMap[i][j] == 'C') {
                         image = new Image(new FileInputStream("res/Photos/empty.png"));
                     } else {
                         item = itemFactory.createItem(gameMap[i][j]);
@@ -195,4 +201,24 @@ public class Maze {
         setUpArray();
         getPane().getChildren().add(getRunner());
     }
+
+    public CareTaker getCareTaker() {
+        return careTaker;
+    }
+
+    public Originator getOriginator() {
+        return originator;
+    }
+
+    public InfoPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    public void setRunnerX(int j){
+        getRunner().setLayoutX(j*20);
+    }
+    public void setRunnerY(int i){
+        getRunner().setLayoutY(i*20);
+    }
+
 }

@@ -28,7 +28,7 @@ public class Runner implements Subject, RunnerInterface{
     }
 
     private Runner() {
-        this.health = 9;
+        this.health = 4;
     }
 
     @Override

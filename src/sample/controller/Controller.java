@@ -1,20 +1,32 @@
 
 package sample.controller;
 
+import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.WindowEvent;
+import sample.Main;
 import sample.controller.keypresses.KeyAPressed;
 import sample.controller.keypresses.KeyDPressed;
 import sample.controller.keypresses.KeySPressed;
 import sample.controller.keypresses.KeyWPressed;
+import sample.files.FileClass;
+import sample.lang.Diag;
 import sample.model.Maze;
-import sample.model.Runner;
-import sample.model.observer.InfoPanel;
 import sample.model.weapons.Gun;
 import sample.model.weapons.Hand;
+
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -22,16 +34,63 @@ public class Controller {
     Pane pane;
 
     @FXML
-    Label lblMoves, lblHealth;
+    Label lblMoves, lblHealth, lblTimer;
+
+    @FXML
+    Button btnSave;
+
+    @FXML
+    ListView<String> lv;
+
     private Maze maze = new Maze();
     private Game game = new Game(maze);
+    private ArrayList<String> savedGames;
+
+    private boolean paused = false;
+
+    private AnimationTimer timer = new AnimationTimer() {
+        private long timestamp;
+        private long time = 0;
+        private long fraction = 0;
+
+        @Override
+        public void start() {
+            //current time adjusted by remaining time from last run
+            timestamp = System.currentTimeMillis() - fraction;
+            super.start();
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            //save leftover time not handled with the last update
+            fraction = System.currentTimeMillis() - timestamp;
+        }
+
+        @Override
+        public void handle(long now) {
+            long newTime = System.currentTimeMillis();
+            if (timestamp + 1000 <= newTime) {
+                long deltaT = (newTime - timestamp) / 1000;
+                time += deltaT;
+                timestamp += 1000 * deltaT;
+                System.out.println("time: " + time);
+                lblTimer.setText(Long.toString(time));
+            }
+        }
+    };
 
     @FXML
     public void initialize() {
+        savedGames = new ArrayList<>();
+        savedGames.addAll(Main.savedGames);
+        ObservableList<String> ol = FXCollections.observableArrayList(savedGames);
+        lv.setItems(ol);
         maze.setPane(pane);
         maze.setLblHealth(lblHealth);
         maze.setLblMoves(lblMoves);
         maze.setUpGame();
+        timer.start();
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {
@@ -59,7 +118,37 @@ public class Controller {
             } else if (game.getGameState() instanceof KeyWPressed) {
                 game.keyEnterWPressed();
             }
+        } else if (keyEvent.getCode() == KeyCode.P) {
+            paused ^= true;
+
+            if(paused)
+                timer.stop();
+            else
+                timer.start();
         }
+    }
+
+    public void onBtnSaveClick(ActionEvent actionEvent) {
+        FileClass fileClass = new FileClass();
+        String name = Diag.showDiag();
+        if (name != null) {
+            fileClass.saveGame(maze.getGameMap(), maze.getInfoPanel(),
+                    maze.getRow(), maze.getCol(), name);
+            savedGames.add(name);
+            Main.savedGames.clear();
+            Main.savedGames.addAll(savedGames);
+            ObservableList<String> ol = FXCollections.observableArrayList(savedGames);
+            lv.setItems(ol);
+        }
+    }
+
+    public void onListClicked(MouseEvent event) {
+        String selectedItem = lv.getSelectionModel().getSelectedItem();
+        FileClass fileClass = new FileClass();
+        fileClass.loadGame(selectedItem, maze);
+        maze.getLblMoves().setText(Integer.toString(maze.getInfoPanel().getMoves()));
+        maze.getLblHealth().setText(Integer.toString(maze.getInfoPanel().getHealth()));
+        maze.updateGame();
     }
 
 //    private void moveBullet(char key, boolean stop) {

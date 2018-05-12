@@ -75,7 +75,8 @@ public class EnterSKeyPressed implements GameState {
             System.out.println("bullets = " + runnerObject.getBullets());
 
             for (int i = maze.getRow() + 1; i < 30; i++) {
-                if (maze.getGameMap()[i][maze.getCol()] != 'E' && maze.getGameMap()[i][maze.getCol()] != 'W') {
+                if (maze.getGameMap()[i][maze.getCol()] != 'E' && maze.getGameMap()[i][maze.getCol()] != 'W'
+                        && maze.getGameMap()[i][maze.getCol()] != 'C') {
                     maze.setItem(maze.getItemFactory().createItem(maze.getGameMap()[i][maze.getCol()]));
                     if (maze.getWeapon().hit(maze.getItem())) {
                         maze.getGameMap()[i][maze.getCol()] = 'E';

@@ -34,7 +34,11 @@ public class ItemFactory {
                 x='A';
                 return new ArmourGift();
 
-            case 'E': case 'W':
+            case 'T':
+                x='T';
+                return new Tree();
+
+            case 'E': case 'W': case 'C':
                 return null;
 
             default:
@@ -43,7 +47,7 @@ public class ItemFactory {
     }
 
     private Item selectItem() {
-        int randomNumber = new Random().nextInt(5) + 1;
+        int randomNumber = new Random().nextInt(6) + 1;
         switch (randomNumber) {
             case 1:
                 x='B';
@@ -64,6 +68,10 @@ public class ItemFactory {
             case 5:
                 x='A';
                 return new ArmourGift();
+
+            case 6:
+                x='T';
+                return new Tree();
         }
         return null;
     }

@@ -3,10 +3,13 @@ package sample.controller.keypresses;
 import sample.controller.Game;
 import sample.controller.GameState;
 import sample.model.Maze;
+import sample.model.Runner;
 
 public class KeySPressed implements GameState {
     private Game game;
     private Maze maze;
+    private Runner runner = Runner.getInstance();
+
     public KeySPressed(Game game, Maze maze) {
         this.game = game;
         this.maze = maze;
@@ -35,7 +38,8 @@ public class KeySPressed implements GameState {
         int tempRow = maze.getRow();
         int tempCol = maze.getCol();
 
-        if (tempMap[tempRow + 1][tempCol] != 'E' && tempMap[tempRow + 1][tempCol] != 'W') {
+        if (tempMap[tempRow + 1][tempCol] != 'E' && tempMap[tempRow + 1][tempCol] != 'W'
+                && tempMap[tempRow + 1][tempCol] != 'C') {
             tempRow++;
             maze.setRow(tempRow);
             maze.setItem(maze.getItemFactory().createItem(tempMap[tempRow][tempCol]));
@@ -45,12 +49,30 @@ public class KeySPressed implements GameState {
             maze.getRunner().setLayoutY(maze.getRunner().getLayoutY()+20);
 
             maze.updateHealth();
+            if(runner.getHealth() == 0){
+                System.out.println("RETURN TO CHECK POINT");
+                maze.setGameMap(maze.getOriginator().restoreMapFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1)));
+                maze.getRunner().setLayoutX(maze.getOriginator().restoreIndexJFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1))*20);
+                maze.getRunner().setLayoutY(maze.getOriginator().restoreIndexIFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1))*20);
+                maze.setCol(maze.getOriginator().restoreIndexJFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1)));
+                maze.setRow(maze.getOriginator().restoreIndexIFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1)));
+                Maze.index++;
+            }
             maze.updateGame();
-        } else if (tempMap[tempRow + 1][tempCol] == 'E') {
+        } else if (tempMap[tempRow + 1][tempCol] == 'E' || tempMap[tempRow + 1][tempCol] == 'C') {
             System.out.println("You can move here");
             tempRow++;
             maze.setRow(tempRow);
             maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() + 20);
+            if(tempMap[tempRow][tempCol] == 'C'){
+                maze.getOriginator().setMemento(maze.getGameMap(), maze.getRow(), maze.getCol());
+                maze.getCareTaker().addMemento(maze.getOriginator().storeInMemento());
+            }
         }
         maze.updateMoves();
     }

@@ -3,11 +3,13 @@ package sample.controller.keypresses;
 import sample.controller.Game;
 import sample.controller.GameState;
 import sample.model.Maze;
+import sample.model.Runner;
 
 public class KeyDPressed implements GameState {
 
     private Maze maze;
     private Game game;
+    private Runner runner = Runner.getInstance();
 
     public KeyDPressed(Game game, Maze maze) {
         this.game = game;
@@ -46,7 +48,8 @@ public class KeyDPressed implements GameState {
         int tempRow = maze.getRow();
         int tempCol = maze.getCol();
 
-        if (tempMap[tempRow][tempCol + 1] != 'E' && tempMap[tempRow][tempCol + 1] != 'W') {
+        if (tempMap[tempRow][tempCol + 1] != 'E' && tempMap[tempRow][tempCol + 1] != 'W'
+                && tempMap[tempRow][tempCol + 1] != 'C') {
             tempCol++;
             maze.setCol(tempCol);
 
@@ -57,12 +60,30 @@ public class KeyDPressed implements GameState {
             maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 20);
 
             maze.updateHealth();
+            if(runner.getHealth() == 0){
+                System.out.println("RETURN TO CHECK POINT");
+                maze.setGameMap(maze.getOriginator().restoreMapFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1)));
+                maze.getRunner().setLayoutX(maze.getOriginator().restoreIndexJFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1))*20);
+                maze.getRunner().setLayoutY(maze.getOriginator().restoreIndexIFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1))*20);
+                maze.setCol(maze.getOriginator().restoreIndexJFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1)));
+                maze.setRow(maze.getOriginator().restoreIndexIFromMemento(
+                        maze.getCareTaker().getMemento(Maze.index+1)));
+                Maze.index++;
+            }
             maze.updateGame();
-        } else if (tempMap[tempRow][tempCol + 1] == 'E') {
+        } else if (tempMap[tempRow][tempCol + 1] == 'E' || tempMap[tempRow][tempCol + 1] == 'C') {
             System.out.println("You can move here");
             tempCol++;
             maze.setCol(tempCol);
             maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 20);
+            if(tempMap[tempRow][tempCol] == 'C'){
+                maze.getOriginator().setMemento(maze.getGameMap(), maze.getRow(), maze.getCol());
+                maze.getCareTaker().addMemento(maze.getOriginator().storeInMemento());
+            }
         }
         maze.updateMoves();
     }
