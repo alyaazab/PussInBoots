@@ -25,16 +25,17 @@ import sample.lang.Diag;
 import sample.model.Maze;
 import sample.model.weapons.Gun;
 import sample.model.weapons.Hand;
+import sample.scenes.Navigation;
 
 import java.util.ArrayList;
 
 public class Controller {
 
     @FXML
-    Pane pane;
+    Pane pane, paneMenu;
 
     @FXML
-    Label lblMoves, lblHealth, lblTimer;
+    Label lblMoves, lblHealth, lblTimer, lblHealthMenu, lblMovesMenu, lblTimerMenu;
 
     @FXML
     Button btnSave;
@@ -47,6 +48,8 @@ public class Controller {
     private ArrayList<String> savedGames;
 
     private boolean paused = false;
+    private String timeString = " ";
+    private Boolean load = false;
 
     private AnimationTimer timer = new AnimationTimer() {
         private long timestamp;
@@ -72,16 +75,22 @@ public class Controller {
             long newTime = System.currentTimeMillis();
             if (timestamp + 1000 <= newTime) {
                 long deltaT = (newTime - timestamp) / 1000;
+                if(load){
+                    time = Long.parseLong(lblTimer.getText());
+                }
                 time += deltaT;
                 timestamp += 1000 * deltaT;
                 System.out.println("time: " + time);
                 lblTimer.setText(Long.toString(time));
+                timeString = Long.toString(time);
             }
         }
     };
 
+
     @FXML
     public void initialize() {
+        paneMenu.setVisible(true);
         savedGames = new ArrayList<>();
         savedGames.addAll(Main.savedGames);
         ObservableList<String> ol = FXCollections.observableArrayList(savedGames);
@@ -89,6 +98,7 @@ public class Controller {
         maze.setPane(pane);
         maze.setLblHealth(lblHealth);
         maze.setLblMoves(lblMoves);
+        maze.setLblTimer(lblTimer);
         maze.setUpGame();
         timer.start();
     }
@@ -133,7 +143,7 @@ public class Controller {
         String name = Diag.showDiag();
         if (name != null) {
             fileClass.saveGame(maze.getGameMap(), maze.getInfoPanel(),
-                    maze.getRow(), maze.getCol(), name);
+                    maze.getRow(), maze.getCol(),timeString,name);
             savedGames.add(name);
             Main.savedGames.clear();
             Main.savedGames.addAll(savedGames);
@@ -149,6 +159,38 @@ public class Controller {
         maze.getLblMoves().setText(Integer.toString(maze.getInfoPanel().getMoves()));
         maze.getLblHealth().setText(Integer.toString(maze.getInfoPanel().getHealth()));
         maze.updateGame();
+        load = true;
+    }
+
+    public void onBtnPauseClick(ActionEvent actionEvent) throws Exception {
+        paused ^= true;
+
+        if(paused) {
+            timer.stop();
+        }
+        else
+            timer.start();
+
+        paneMenu.setVisible(true);
+        for (int i = 0; i < Maze.imageViews.size(); i++){
+            pane.getChildren().remove(Maze.imageViews.get(i));
+        }
+        lblHealthMenu.setText(lblHealth.getText());
+        lblMovesMenu.setText(lblMoves.getText());
+        lblTimerMenu.setText(lblTimer.getText());
+    }
+
+    public void onBtnResumeClick(ActionEvent actionEvent) {
+        paneMenu.setVisible(false);
+        maze.updateGame();
+
+        paused ^= true;
+
+        if(paused) {
+            timer.stop();
+        }
+        else
+            timer.start();
     }
 
 //    private void moveBullet(char key, boolean stop) {

@@ -45,7 +45,7 @@ public class FileClass {
         return " ";
     }
 
-    public void saveGame(char[][] gameMap, InfoPanel infoPanel, int r, int c, String filepath) {
+    public void saveGame(char[][] gameMap, InfoPanel infoPanel, int r, int c, String timeString, String filepath) {
         System.out.println(filepath);
         File file = new File("res/SavedGames/" + filepath + ".txt");
         boolean b = false;
@@ -72,6 +72,7 @@ public class FileClass {
             pw.println(infoPanel.getBullets());
             pw.println(r);
             pw.println(c);
+            pw.println(timeString);
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             Logger.getLogger(FileClass.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException e) {
@@ -116,6 +117,10 @@ public class FileClass {
             System.out.println("----------"+ line);
             maze.setRunnerX(Integer.parseInt(line.trim()));
             maze.setCol(Integer.parseInt(line.trim()));
+
+            line=bf.readLine();
+            System.out.println("----------"+ line);
+            maze.getLblTimer().setText(line);
 
         } catch (IOException e) {
             e.printStackTrace();

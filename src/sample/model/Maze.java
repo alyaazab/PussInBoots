@@ -14,6 +14,7 @@ import sample.model.weapons.Hand;
 import sample.model.weapons.Weapon;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 public class Maze {
 
@@ -28,7 +29,7 @@ public class Maze {
     private ImageView runner;
 
     private Pane pane;
-    private Label lblMoves, lblHealth;
+    private Label lblTimer, lblMoves, lblHealth;
 
     private int row=29;
     private int col=0;
@@ -37,7 +38,9 @@ public class Maze {
 
     private CareTaker careTaker = new CareTaker();
     private Originator originator = new Originator();
-    public static int index=-1;
+    private static int index=-1;
+    public static ArrayList<ImageView> imageViews = new ArrayList<>();
+
 
     public void setUpArray(){
         try {
@@ -61,6 +64,7 @@ public class Maze {
                     img.setLayoutY(i * 20);
 
                     pane.getChildren().add(img);
+                    imageViews.add(img);
 
                 }
             }
@@ -180,8 +184,16 @@ public class Maze {
         return lblHealth;
     }
 
+    public Label getLblTimer() {
+        return lblTimer;
+    }
+
     public void setLblHealth(Label lblHealth) {
         this.lblHealth = lblHealth;
+    }
+
+    public void setLblTimer(Label lblTimer) {
+        this.lblTimer = lblTimer;
     }
 
     public void updateMoves() {
@@ -209,7 +221,6 @@ public class Maze {
     public Originator getOriginator() {
         return originator;
     }
-
     public InfoPanel getInfoPanel() {
         return infoPanel;
     }
@@ -217,8 +228,39 @@ public class Maze {
     public void setRunnerX(int j){
         getRunner().setLayoutX(j*20);
     }
+
     public void setRunnerY(int i){
         getRunner().setLayoutY(i*20);
     }
 
+    public void saveMemento(){
+        getOriginator().setMemento(getGameMap(), getRow(), getCol(), runnerObject.getHealth(),
+                runnerObject.getMoves(), runnerObject.getBullets());
+        getCareTaker().addMemento(getOriginator().storeInMemento());
+    }
+
+    public void loadMemento(){
+        System.out.println("RETURN TO CHECK POINT");
+        setGameMap(getOriginator().restoreMapFromMemento(
+                getCareTaker().getMemento(Maze.index+1)));
+        getRunner().setLayoutX(getOriginator().restoreIndexJFromMemento(
+                getCareTaker().getMemento(Maze.index+1))*20);
+        getRunner().setLayoutY(getOriginator().restoreIndexIFromMemento(
+                getCareTaker().getMemento(Maze.index+1))*20);
+
+        runnerObject.setHealth(getOriginator().restoreHealthFromMemento(
+                getCareTaker().getMemento(Maze.index+1)));
+
+        runnerObject.setMoves(getOriginator().restoreMovesFromMemento(
+                getCareTaker().getMemento(Maze.index+1)));
+
+        runnerObject.setBullets(getOriginator().restoreBulletsFromMemento(
+                getCareTaker().getMemento(Maze.index+1)));
+
+        setCol(getOriginator().restoreIndexJFromMemento(
+                getCareTaker().getMemento(Maze.index+1)));
+        setRow(getOriginator().restoreIndexIFromMemento(
+                getCareTaker().getMemento(Maze.index+1)));
+        Maze.index++;
+    }
 }

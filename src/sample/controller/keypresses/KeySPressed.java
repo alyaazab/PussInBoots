@@ -51,17 +51,8 @@ public class KeySPressed implements GameState {
             maze.updateHealth();
             if(runner.getHealth() == 0){
                 System.out.println("RETURN TO CHECK POINT");
-                maze.setGameMap(maze.getOriginator().restoreMapFromMemento(
-                        maze.getCareTaker().getMemento(Maze.index+1)));
-                maze.getRunner().setLayoutX(maze.getOriginator().restoreIndexJFromMemento(
-                        maze.getCareTaker().getMemento(Maze.index+1))*20);
-                maze.getRunner().setLayoutY(maze.getOriginator().restoreIndexIFromMemento(
-                        maze.getCareTaker().getMemento(Maze.index+1))*20);
-                maze.setCol(maze.getOriginator().restoreIndexJFromMemento(
-                        maze.getCareTaker().getMemento(Maze.index+1)));
-                maze.setRow(maze.getOriginator().restoreIndexIFromMemento(
-                        maze.getCareTaker().getMemento(Maze.index+1)));
-                Maze.index++;
+                maze.loadMemento();
+                maze.getLblHealth().setText(runner.getHealth()+"");
             }
             maze.updateGame();
         } else if (tempMap[tempRow + 1][tempCol] == 'E' || tempMap[tempRow + 1][tempCol] == 'C') {
@@ -70,8 +61,7 @@ public class KeySPressed implements GameState {
             maze.setRow(tempRow);
             maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() + 20);
             if(tempMap[tempRow][tempCol] == 'C'){
-                maze.getOriginator().setMemento(maze.getGameMap(), maze.getRow(), maze.getCol());
-                maze.getCareTaker().addMemento(maze.getOriginator().storeInMemento());
+                maze.saveMemento();
             }
         }
         maze.updateMoves();

@@ -13,9 +13,6 @@ public class Main extends Application {
 
     public static ArrayList<String> savedGames = new ArrayList<>();
 
-    public static Stage stage = null;
-    public static boolean bool = false;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("view/sample.fxml"));
