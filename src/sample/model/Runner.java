@@ -13,6 +13,8 @@ public class Runner implements Subject, RunnerInterface{
     private Observer infoPanel = InfoPanel.getInstance();
     private String name;
     private int health;
+    private int lives;
+    public static int liv = 3;
     private int coins;
     private int score;
     private int moves;
@@ -28,12 +30,13 @@ public class Runner implements Subject, RunnerInterface{
     }
 
     private Runner() {
-        this.health = 4;
+        this.health = 50;
+        this.lives = 3;
     }
 
     @Override
     public void notifyObserver() {
-        infoPanel.update(name, health, coins, moves, score, bullets);
+        infoPanel.update(name, health, coins, moves, score, bullets, lives);
     }
 
     public String getName() {
@@ -89,6 +92,15 @@ public class Runner implements Subject, RunnerInterface{
         this.bullets = bullets;
         notifyObserver();
     }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
     @Override
     public void setArmourValue(Item i) {
         item = i;

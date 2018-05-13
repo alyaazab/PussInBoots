@@ -17,7 +17,6 @@ public class LivesGift extends Gift {
         }
     }
 
-
     @Override
     public Image getImage() {
         return this.img;

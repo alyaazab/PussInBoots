@@ -29,7 +29,7 @@ public class Maze {
     private ImageView runner;
 
     private Pane pane;
-    private Label lblTimer, lblMoves, lblHealth;
+    private Label lblBullets, lblTimer, lblMoves, lblHealth, lblLives;
 
     private int row=29;
     private int col=0;
@@ -40,7 +40,6 @@ public class Maze {
     private Originator originator = new Originator();
     private static int index=-1;
     public static ArrayList<ImageView> imageViews = new ArrayList<>();
-
 
     public void setUpArray(){
         try {
@@ -196,6 +195,22 @@ public class Maze {
         this.lblTimer = lblTimer;
     }
 
+    public void setLblLives(Label lblLives) {
+        this.lblLives = lblLives;
+    }
+
+    public Label getLblLives(){
+        return lblLives;
+    }
+
+    public void setLblBullets(Label lblBullets) {
+        this.lblBullets = lblBullets;
+    }
+
+    public Label getLblBullets() {
+        return lblBullets;
+    }
+
     public void updateMoves() {
         runnerObject.setMoves(runnerObject.getMoves() + 1);
         getLblMoves().setText(Integer.toString(infoPanel.getMoves()));
@@ -205,6 +220,7 @@ public class Maze {
     public void updateHealth() {
         getItem().change(runnerObject);
         getLblHealth().setText(Integer.toString(infoPanel.getHealth()));
+        getLblLives().setText(Integer.toString(infoPanel.getLives()));
         System.out.println("updating health");
     }
 
@@ -213,7 +229,6 @@ public class Maze {
         setUpArray();
         getPane().getChildren().add(getRunner());
     }
-
     public CareTaker getCareTaker() {
         return careTaker;
     }
@@ -221,16 +236,17 @@ public class Maze {
     public Originator getOriginator() {
         return originator;
     }
+
     public InfoPanel getInfoPanel() {
         return infoPanel;
     }
 
     public void setRunnerX(int j){
-        getRunner().setLayoutX(j*20);
+        getRunner().setLayoutX(j*22);
     }
 
     public void setRunnerY(int i){
-        getRunner().setLayoutY(i*20);
+        getRunner().setLayoutY(i*22);
     }
 
     public void saveMemento(){
@@ -244,9 +260,9 @@ public class Maze {
         setGameMap(getOriginator().restoreMapFromMemento(
                 getCareTaker().getMemento(Maze.index+1)));
         getRunner().setLayoutX(getOriginator().restoreIndexJFromMemento(
-                getCareTaker().getMemento(Maze.index+1))*20);
+                getCareTaker().getMemento(Maze.index+1))*22);
         getRunner().setLayoutY(getOriginator().restoreIndexIFromMemento(
-                getCareTaker().getMemento(Maze.index+1))*20);
+                getCareTaker().getMemento(Maze.index+1))*22);
 
         runnerObject.setHealth(getOriginator().restoreHealthFromMemento(
                 getCareTaker().getMemento(Maze.index+1)));

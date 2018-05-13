@@ -38,8 +38,11 @@ public class KeySPressed implements GameState {
         int tempRow = maze.getRow();
         int tempCol = maze.getCol();
 
+        if(tempRow + 1 > 29) return;
+
         if (tempMap[tempRow + 1][tempCol] != 'E' && tempMap[tempRow + 1][tempCol] != 'W'
                 && tempMap[tempRow + 1][tempCol] != 'C') {
+            if(tempMap[tempRow + 1][tempCol] == 'T') return;
             tempRow++;
             maze.setRow(tempRow);
             maze.setItem(maze.getItemFactory().createItem(tempMap[tempRow][tempCol]));
@@ -49,12 +52,15 @@ public class KeySPressed implements GameState {
             maze.getRunner().setLayoutY(maze.getRunner().getLayoutY()+22);
 
             maze.updateHealth();
-            if(runner.getHealth() == 0){
-                System.out.println("RETURN TO CHECK POINT");
+
+            if(runner.getLives() < Runner.liv){
                 maze.loadMemento();
                 maze.getLblHealth().setText(runner.getHealth()+"");
+                maze.getLblLives().setText(runner.getLives()+"");
+                Runner.liv = runner.getLives();
             }
             maze.updateGame();
+            maze.updateMoves();
         } else if (tempMap[tempRow + 1][tempCol] == 'E' || tempMap[tempRow + 1][tempCol] == 'C') {
             System.out.println("You can move here");
             tempRow++;
@@ -63,8 +69,8 @@ public class KeySPressed implements GameState {
             if(tempMap[tempRow][tempCol] == 'C'){
                 maze.saveMemento();
             }
+            maze.updateMoves();
         }
-        maze.updateMoves();
     }
 
     @Override

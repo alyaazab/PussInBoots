@@ -48,8 +48,11 @@ public class KeyDPressed implements GameState {
         int tempRow = maze.getRow();
         int tempCol = maze.getCol();
 
+        if(tempCol + 1 > 29) return;
+
         if (tempMap[tempRow][tempCol + 1] != 'E' && tempMap[tempRow][tempCol + 1] != 'W'
                 && tempMap[tempRow][tempCol + 1] != 'C') {
+            if(tempMap[tempRow][tempCol + 1] == 'T')return;
             tempCol++;
             maze.setCol(tempCol);
 
@@ -60,12 +63,15 @@ public class KeyDPressed implements GameState {
             maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 22);
 
             maze.updateHealth();
-            if(runner.getHealth() == 0){
-                System.out.println("RETURN TO CHECK POINT");
+
+            if(runner.getLives() < Runner.liv){
                 maze.loadMemento();
                 maze.getLblHealth().setText(runner.getHealth()+"");
+                maze.getLblLives().setText(runner.getLives()+"");
+                Runner.liv = runner.getLives();
             }
             maze.updateGame();
+            maze.updateMoves();
         } else if (tempMap[tempRow][tempCol + 1] == 'E' || tempMap[tempRow][tempCol + 1] == 'C') {
             System.out.println("You can move here");
             tempCol++;
@@ -74,8 +80,8 @@ public class KeyDPressed implements GameState {
             if(tempMap[tempRow][tempCol] == 'C'){
                 maze.saveMemento();
             }
+            maze.updateMoves();
         }
-        maze.updateMoves();
     }
 
 

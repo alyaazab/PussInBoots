@@ -68,10 +68,11 @@ public class EnterSKeyPressed implements GameState {
                 }
             }
         } else {
-            maze.getBullet().setLayoutX(maze.getRunner().getLayoutX());
+            /*maze.getBullet().setLayoutX(maze.getRunner().getLayoutX());
             maze.getBullet().setLayoutY(maze.getRunner().getLayoutY());
-            maze.getPane().getChildren().add(maze.getBullet());
+            maze.getPane().getChildren().add(maze.getBullet());*/
             runnerObject.setBullets(runnerObject.getBullets() - 1);
+            maze.getLblBullets().setText(runnerObject.getBullets()+"");
             System.out.println("bullets = " + runnerObject.getBullets());
 
             for (int i = maze.getRow() + 1; i < 30; i++) {

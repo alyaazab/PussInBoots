@@ -30,5 +30,9 @@ public class LivesBomb extends Bomb {
             return;
         }
         runner.setHealth(runner.getHealth()-1);
+        if(runner.getHealth() == 0){
+            runner.setLives(runner.getLives()-1);
+            runner.setHealth(50);
+        }
     }
 }

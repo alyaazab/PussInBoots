@@ -36,10 +36,10 @@ import java.util.ArrayList;
 public class Controller {
 
     @FXML
-    Pane pane, paneMenu;
+    Pane pane, paneMenu, gamePane;
 
     @FXML
-    Label lblMoves, lblHealth, lblTimer, lblHealthMenu, lblMovesMenu, lblTimerMenu;
+    Label lblLives, lblMoves, lblHealth, lblBullets, lblTimer, lblHealthMenu, lblMovesMenu, lblTimerMenu, lblBulletsMenu;
 
     @FXML
     Button btnSave;
@@ -50,12 +50,11 @@ public class Controller {
     private Maze maze = new Maze();
     private Game game = new Game(maze);
     private ArrayList<String> savedGames;
-
     private boolean paused = false;
     private String timeString = " ";
     private Boolean load = false;
 
-    Image runnerUpIdle, runnerDownIdle, runnerRightIdle, runnerLeftIdle,
+    private Image runnerUpIdle, runnerDownIdle, runnerRightIdle, runnerLeftIdle,
             runnerUpGif, runnerDownGif, runnerLeftGif, runnerRightGif;
 
     ImageView rUpIdle, rDownIdle, rRightIdle, rLeftIdle,
@@ -86,7 +85,7 @@ public class Controller {
             if (timestamp + 1000 <= newTime) {
                 long deltaT = (newTime - timestamp) / 1000;
                 if(load){
-                    time = Long.parseLong(lblTimer.getText());
+                    time = Long.parseLong(lblTimer.getText().trim());
                 }
                 time += deltaT;
                 timestamp += 1000 * deltaT;
@@ -100,7 +99,8 @@ public class Controller {
 
     @FXML
     public void initialize() {
-        paneMenu.setVisible(true);
+        paneMenu.setVisible(false);
+        gamePane.setVisible(true);
         savedGames = new ArrayList<>();
         savedGames.addAll(Main.savedGames);
         ObservableList<String> ol = FXCollections.observableArrayList(savedGames);
@@ -125,11 +125,14 @@ public class Controller {
         maze.setLblHealth(lblHealth);
         maze.setLblMoves(lblMoves);
         maze.setLblTimer(lblTimer);
+        maze.setLblLives(lblLives);
+        maze.setLblBullets(lblBullets);
         maze.setUpGame();
         timer.start();
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {
+        if(paused) return;
         if (keyEvent.getCode() == KeyCode.D) {
             maze.getRunner().setImage(runnerRightGif);
             game.keyDPressed();
@@ -148,7 +151,8 @@ public class Controller {
         } else if (keyEvent.getCode() == KeyCode.NUMPAD2 || keyEvent.getCode() == KeyCode.DIGIT2) {
             maze.setWeapon(new Gun());
             System.out.println("Gun selected");
-        } else if (keyEvent.getCode() == KeyCode.ENTER) {
+        } else if (keyEvent.getCode() == KeyCode.G) {
+            System.out.println("FUCKING ENTERRRRRRRRRR");
             if (game.getGameState() instanceof KeyDPressed) {
                 game.keyEnterDPressed();
             } else if (game.getGameState() instanceof KeyAPressed) {
@@ -212,17 +216,21 @@ public class Controller {
         else
             timer.start();
 
+        gamePane.setVisible(false);
         paneMenu.setVisible(true);
+
         for (int i = 0; i < Maze.imageViews.size(); i++){
             pane.getChildren().remove(Maze.imageViews.get(i));
         }
         lblHealthMenu.setText(lblHealth.getText());
         lblMovesMenu.setText(lblMoves.getText());
         lblTimerMenu.setText(lblTimer.getText());
+        lblBulletsMenu.setText(lblBullets.getText());
     }
 
     public void onBtnResumeClick(ActionEvent actionEvent) {
         paneMenu.setVisible(false);
+        gamePane.setVisible(true);
         maze.updateGame();
 
         paused ^= true;

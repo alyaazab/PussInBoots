@@ -73,6 +73,7 @@ public class FileClass {
             pw.println(r);
             pw.println(c);
             pw.println(timeString);
+            pw.println(infoPanel.getLives());
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             Logger.getLogger(FileClass.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException e) {
@@ -122,6 +123,9 @@ public class FileClass {
             System.out.println("----------"+ line);
             maze.getLblTimer().setText(line);
 
+            line=bf.readLine();
+            System.out.println("----------"+ line);
+            maze.getLblLives().setText(line);
         } catch (IOException e) {
             e.printStackTrace();
         }
