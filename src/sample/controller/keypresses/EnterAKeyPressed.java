@@ -1,6 +1,11 @@
 package sample.controller.keypresses;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import sample.controller.Game;
 import sample.controller.GameState;
 import sample.model.Maze;
@@ -12,39 +17,7 @@ public class EnterAKeyPressed implements GameState {
     private Maze maze;
     private Game game;
     private Runner runnerObject = Runner.getInstance();
-
-    private AnimationTimer timer = new AnimationTimer() {
-        private long timestamp;
-        private long time = 0;
-        private long fraction = 0;
-        private boolean b = false;
-        @Override
-        public void start() {
-            //current time adjusted by remaining time from last run
-            timestamp = System.currentTimeMillis() - fraction;
-            maze.getBullet().setLayoutX(maze.getRunner().getLayoutX());
-            maze.getBullet().setLayoutY(maze.getRunner().getLayoutY());
-            maze.getPane().getChildren().add(maze.getBullet());
-            System.out.println("STARTTT");
-            super.start();
-        }
-
-        @Override
-        public void stop() {
-            super.stop();
-            //save leftover time not handled with the last update
-            maze.getPane().getChildren().remove(maze.getBullet());
-            fraction = System.currentTimeMillis() - timestamp;
-            System.out.println("STOPPPP");
-        }
-
-        @Override
-        public void handle(long now) {
-            long newTime = System.currentTimeMillis();
-            maze.getBullet().setLayoutX(maze.getBullet().getLayoutX()-3);
-            System.out.println("HANDLEEE");
-        }
-    };
+    public static Circle c;
 
 
     public EnterAKeyPressed(Game game, Maze maze) {
@@ -95,17 +68,33 @@ public class EnterAKeyPressed implements GameState {
                     maze.updateGame();
                 }
             }
-        } else {
-            /*maze.getBullet().setLayoutX(maze.getRunner().getLayoutX());
-            maze.getBullet().setLayoutY(maze.getRunner().getLayoutY());
-            maze.getPane().getChildren().add(maze.getBullet());*/
-            runnerObject.setBullets(runnerObject.getBullets()-1);
+        }else if (Integer.parseInt(maze.getLblBullets().getText())!=0) {
+            runnerObject.setBullets(runnerObject.getBullets() - 1);
             maze.getLblBullets().setText(runnerObject.getBullets()+"");
             System.out.println("bullets = " + runnerObject.getBullets());
+            PathTransition transition = new PathTransition();
+            Line line = new Line();
 
-            for (int i = maze.getCol() - 1; i >= 0; i--) {
-                timer.start();
-                timer.handle(1000);
+            line.setStartX(maze.getRunner().getLayoutX());
+            line.setStartY(maze.getRunner().getLayoutY() + 11);
+
+            line.setEndX(maze.getRunner().getLayoutX() - 22 * 5);
+            line.setEndY(maze.getRunner().getLayoutY() + 11);
+
+            c = new Circle();
+            c.setRadius(3);
+            c.setCenterX(maze.getRunner().getLayoutX());
+            c.setCenterY(maze.getRunner().getLayoutY() + 11);
+            c.setFill(Color.BLACK);
+            maze.getPane().getChildren().add(c);
+
+            transition.setNode(c);
+            transition.setDuration(Duration.seconds(1));
+            transition.setPath(line);
+            transition.setCycleCount(1);
+            transition.play();
+
+            for (int i = maze.getCol() - 1; i >= maze.getCol()-6; i--) {
                 if (maze.getGameMap()[maze.getRow()][i] != 'E' && maze.getGameMap()[maze.getRow()][i] != 'W'
                         && maze.getGameMap()[maze.getRow()][i] != 'C') {
                     maze.setItem(maze.getItemFactory().createItem(maze.getGameMap()[maze.getRow()][i]));
@@ -113,12 +102,11 @@ public class EnterAKeyPressed implements GameState {
                         maze.getGameMap()[maze.getRow()][i] = 'E';
 
                         maze.updateHealth();
-                        maze.updateGame();
                     }
                     break;
                 }
-                maze.getPane().getChildren().remove(maze.getBullet());
-                timer.stop();
+                if(i==0)
+                    break;
             }
         }
 
@@ -145,4 +133,6 @@ public class EnterAKeyPressed implements GameState {
         System.out.println("Enter D Pressed");
         game.keyEnterDPressed();
     }
+
+    public Circle getCircle() { return c;}
 }

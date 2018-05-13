@@ -2,6 +2,7 @@ package sample.model.items.Gifts;
 
 
 import javafx.scene.image.Image;
+import sample.model.Maze;
 import sample.model.Runner;
 
 import java.io.FileInputStream;
@@ -27,5 +28,6 @@ public class BulletGift extends Gift {
     public void change(Runner runner) {
         runner = Runner.getInstance();
         runner.setBullets(runner.getBullets()+2);
+
     }
 }

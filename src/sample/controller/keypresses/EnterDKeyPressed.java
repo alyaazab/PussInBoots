@@ -1,15 +1,23 @@
 package sample.controller.keypresses;
 
+import javafx.animation.PathTransition;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import sample.controller.Game;
 import sample.controller.GameState;
 import sample.model.Maze;
 import sample.model.Runner;
 import sample.model.weapons.Hand;
 
+
 public class EnterDKeyPressed implements GameState {
     private Maze maze;
     private Game game;
     private Runner runnerObject = Runner.getInstance();
+    public static Circle c;
 
     public EnterDKeyPressed(Game game, Maze maze) {
         this.game = game;
@@ -81,29 +89,56 @@ public class EnterDKeyPressed implements GameState {
                     maze.updateGame();
                 }
             }
-        } else {
-            /*maze.getBullet().setLayoutX(maze.getRunner().getLayoutX());
-            maze.getBullet().setLayoutY(maze.getRunner().getLayoutY());
-            maze.getPane().getChildren().add(maze.getBullet());*/
+        } else if (Integer.parseInt(maze.getLblBullets().getText())!=0) {
             runnerObject.setBullets(runnerObject.getBullets() - 1);
             maze.getLblBullets().setText(runnerObject.getBullets()+"");
             System.out.println("bullets = " + runnerObject.getBullets());
+                PathTransition transition = new PathTransition();
+                Line line = new Line();
 
-            for (int i = maze.getCol() + 1; i < 30; i++) {
-                if (maze.getGameMap()[maze.getRow()][i] != 'E' && maze.getGameMap()[maze.getRow()][i] != 'W'
-                        && maze.getGameMap()[maze.getRow()][i] != 'C') {
-                    maze.setItem(maze.getItemFactory().createItem(maze.getGameMap()[maze.getRow()][i]));
-                    if (maze.getWeapon().hit(maze.getItem())) {
-                        maze.getGameMap()[maze.getRow()][i] = 'E';
+                line.setStartX(maze.getRunner().getLayoutX() + 22);
+                line.setStartY(maze.getRunner().getLayoutY() + 11);
 
-                        maze.updateHealth();
-                        maze.updateGame();
+                line.setEndX(maze.getRunner().getLayoutX() + 22 * 5);
+                line.setEndY(maze.getRunner().getLayoutY() + 11);
+
+                c = new Circle();
+                c.setRadius(3);
+                c.setCenterX(maze.getRunner().getLayoutX() + 22);
+                c.setCenterY(maze.getRunner().getLayoutY() + 11);
+                c.setFill(Color.BLACK);
+                maze.getPane().getChildren().add(c);
+
+                transition.setNode(c);
+                transition.setDuration(Duration.seconds(1));
+                transition.setPath(line);
+                transition.setCycleCount(1);
+                transition.play();
+
+                for (int i = maze.getCol() + 1; i < maze.getCol() + 6; i++) {
+                    if (maze.getGameMap()[maze.getRow()][i] != 'E' && maze.getGameMap()[maze.getRow()][i] != 'W'
+                            && maze.getGameMap()[maze.getRow()][i] != 'C') {
+                        maze.setItem(maze.getItemFactory().createItem(maze.getGameMap()[maze.getRow()][i]));
+                        if (maze.getWeapon().hit(maze.getItem())) {
+                            maze.getGameMap()[maze.getRow()][i] = 'E';
+
+                            maze.updateHealth();
+                            //maze.updateGame();
+                        }
+                        break;
                     }
-                    break;
+                    if(i==29)
+                        break;
                 }
+
             }
+
+            game.setGameState(game.getKeyDPressed());
         }
 
-        game.setGameState(game.getKeyDPressed());
+
+    public Circle getC() {
+        return c;
     }
+
 }

@@ -28,11 +28,11 @@ public class LivesCoinsBomb extends Bomb{
             System.out.println("ANA LABES ARMOUR");
             return;
         }
-        runner.setHealth(runner.getHealth()-2);
-        runner.setCoins(runner.getCoins()-2);
+        runner.setHealth(runner.getHealth()-10);
+        runner.setCoins(runner.getCoins()-5);
         if(runner.getHealth() == 0){
             runner.setLives(runner.getLives()-1);
-            runner.setHealth(50);
+            runner.setHealth(50 + runner.getHealth());
         }
     }
 }

@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -18,10 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.WindowEvent;
 import sample.Main;
-import sample.controller.keypresses.KeyAPressed;
-import sample.controller.keypresses.KeyDPressed;
-import sample.controller.keypresses.KeySPressed;
-import sample.controller.keypresses.KeyWPressed;
+import sample.controller.keypresses.*;
 import sample.files.FileClass;
 import sample.lang.Diag;
 import sample.model.Maze;
@@ -132,7 +130,22 @@ public class Controller {
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {
+        if(maze.getPane().getChildren().contains(EnterDKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterDKeyPressed.c);
+            maze.updateGame();
+        }else if(maze.getPane().getChildren().contains(EnterAKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterAKeyPressed.c);
+            maze.updateGame();
+        }else if(maze.getPane().getChildren().contains(EnterSKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterSKeyPressed.c);
+            maze.updateGame();
+        }else if(maze.getPane().getChildren().contains(EnterWKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterWKeyPressed.c);
+            maze.updateGame();
+        }
+
         if(paused) return;
+
         if (keyEvent.getCode() == KeyCode.D) {
             maze.getRunner().setImage(runnerRightGif);
             game.keyDPressed();
@@ -173,6 +186,15 @@ public class Controller {
     }
 
     public void onKeyReleased(KeyEvent keyEvent) {
+        if (lblLives.getText().equals("0")) {
+            Diag.showWINLOSEDiag(Alert.AlertType.INFORMATION, "WASTED",
+                    "You Died :(", "Good luck next time :(");
+            System.exit(0);
+        }else if(maze.getCol() == 29){
+            Diag.showWINLOSEDiag(Alert.AlertType.INFORMATION, "WINNER",
+                    "You win", "Good luck next time bardo");
+            System.exit(0);
+        }
         if(game.getGameState() instanceof KeyDPressed)
             maze.getRunner().setImage(runnerRightIdle);
         else if(game.getGameState() instanceof KeyAPressed)
@@ -241,6 +263,23 @@ public class Controller {
         else
             timer.start();
     }
+
+    public void onMouseMoved(MouseEvent mouseEvent) {
+        if(maze.getPane().getChildren().contains(EnterDKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterDKeyPressed.c);
+            maze.updateGame();
+        }else if(maze.getPane().getChildren().contains(EnterAKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterAKeyPressed.c);
+            maze.updateGame();
+        }else if(maze.getPane().getChildren().contains(EnterSKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterSKeyPressed.c);
+            maze.updateGame();
+        }else if(maze.getPane().getChildren().contains(EnterWKeyPressed.c)) {
+            maze.getPane().getChildren().remove(EnterWKeyPressed.c);
+            maze.updateGame();
+        }
+    }
+
 
 //    private void moveBullet(char key, boolean stop) {
 //        AnimationTimer animationTimer = new AnimationTimer() {

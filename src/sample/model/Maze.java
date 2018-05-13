@@ -38,8 +38,9 @@ public class Maze {
 
     private CareTaker careTaker = new CareTaker();
     private Originator originator = new Originator();
-    private static int index=-1;
+    public static int index=-1;
     public static ArrayList<ImageView> imageViews = new ArrayList<>();
+    public static int cIndex = -2;
 
     public void setUpArray(){
         try {

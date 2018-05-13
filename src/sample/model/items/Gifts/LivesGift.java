@@ -11,7 +11,7 @@ public class LivesGift extends Gift {
 
     public LivesGift(){
         try {
-            img = new Image(new FileInputStream("res/photos/coin.png"));
+            img = new Image(new FileInputStream("res/photos/life.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

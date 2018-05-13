@@ -21,6 +21,17 @@ public class KeyWPressed implements GameState {
         game.setGameState(game.getKeyWPressed());
         System.out.println("key W was pressed");
 
+        if(runner.getLives() < Runner.liv){
+            if(Maze.index>Maze.cIndex) {
+                maze.loadMemento();
+                maze.getLblHealth().setText(runner.getHealth() + "");
+                maze.getLblLives().setText(runner.getLives() + "");
+                Runner.liv = runner.getLives();
+                Maze.cIndex = Maze.index;
+            }
+        }
+
+
         char[][] tempMap = maze.getGameMap();
         int tempRow = maze.getRow();
         int tempCol = maze.getCol();

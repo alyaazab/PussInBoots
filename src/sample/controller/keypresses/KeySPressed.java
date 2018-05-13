@@ -34,6 +34,8 @@ public class KeySPressed implements GameState {
     public void keySPressed() {
         game.setGameState(game.getKeySPressed());
         System.out.println("Key S Was Pressed");
+
+
         char[][] tempMap = maze.getGameMap();
         int tempRow = maze.getRow();
         int tempCol = maze.getCol();
