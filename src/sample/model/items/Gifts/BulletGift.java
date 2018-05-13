@@ -11,7 +11,7 @@ public class BulletGift extends Gift {
 
     public BulletGift(){
         try {
-            img = new Image(new FileInputStream("res/photos/bulletsGift.png"));
+            img = new Image(new FileInputStream("res/photos/bullets.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

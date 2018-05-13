@@ -12,7 +12,7 @@ public class ArmourGift extends Gift {
 
     public ArmourGift(){
         try {
-            img = new Image(new FileInputStream("res/photos/armourGift.png"));
+            img = new Image(new FileInputStream("res/photos/shield.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
