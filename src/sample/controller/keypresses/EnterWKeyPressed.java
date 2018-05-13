@@ -67,7 +67,8 @@ public class EnterWKeyPressed implements GameState {
                     maze.updateGame();
                 }
             }
-        }else if (Integer.parseInt(maze.getLblBullets().getText())!=0) {
+        }else{
+            if (runnerObject.getBullets()==0)return;
             runnerObject.setBullets(runnerObject.getBullets() - 1);
             maze.getLblBullets().setText(runnerObject.getBullets()+"");
             System.out.println("bullets = " + runnerObject.getBullets());

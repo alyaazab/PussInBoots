@@ -97,6 +97,7 @@ public class Controller {
 
     @FXML
     public void initialize() {
+        pane.setVisible(true);
         paneMenu.setVisible(false);
         gamePane.setVisible(true);
         savedGames = new ArrayList<>();

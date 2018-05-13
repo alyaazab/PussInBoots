@@ -52,6 +52,7 @@ public class KeyAPressed implements GameState {
         if (tempMap[tempRow][tempCol -1] != 'E' && tempMap[tempRow][tempCol -1]!= 'W'
                 && tempMap[tempRow][tempCol -1]!= 'C') {
             if(tempMap[tempRow][tempCol -1] == 'T') return;
+
             tempCol--;
             maze.setCol(tempCol);
 
