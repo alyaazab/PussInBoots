@@ -34,7 +34,7 @@ public class KeyWPressed implements GameState {
             tempMap[tempRow][tempCol] = 'E';
             maze.setGameMap(tempMap);
 
-            maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() - 20);
+            maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() - 22);
 
             maze.updateHealth();
             if(runner.getHealth() == 0){
@@ -47,7 +47,7 @@ public class KeyWPressed implements GameState {
             System.out.println("You can move here");
             tempRow--;
             maze.setRow(tempRow);
-            maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() - 20);
+            maze.getRunner().setLayoutY(maze.getRunner().getLayoutY() - 22);
             if(tempMap[tempRow][tempCol] == 'C'){
                 maze.saveMemento();
             }

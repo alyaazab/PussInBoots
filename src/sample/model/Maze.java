@@ -51,7 +51,7 @@ public class Maze {
                     if (gameMap[i][j] == 'W') {
                         image = new Image(new FileInputStream("res/Photos/wall.png"));
                     } else if (gameMap[i][j] == 'E' || gameMap[i][j] == 'C') {
-                        image = new Image(new FileInputStream("res/Photos/empty.png"));
+                        image = new Image(new FileInputStream("res/Photos/empty2.png"));
                     } else {
                         item = itemFactory.createItem(gameMap[i][j]);
                         image = item.getImage();
@@ -60,8 +60,8 @@ public class Maze {
 
                     ImageView img = new ImageView(image);
 
-                    img.setLayoutX(j * 20);
-                    img.setLayoutY(i * 20);
+                    img.setLayoutX(j * 22);
+                    img.setLayoutY(i * 22);
 
                     pane.getChildren().add(img);
                     imageViews.add(img);
@@ -84,11 +84,11 @@ public class Maze {
             bullet.setFitHeight(10);
             setUpArray();
 
-            image = new Image(new FileInputStream("res/Photos/runner.png"));
+            image = new Image(new FileInputStream("res/Photos/runnerIdle.png"));
 
             runner = new ImageView(image);
             runner.setLayoutX(0);
-            runner.setLayoutY(29 * 20);
+            runner.setLayoutY(29 * 22);
 
             pane.getChildren().add(runner);
 

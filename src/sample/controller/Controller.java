@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +29,8 @@ import sample.model.weapons.Gun;
 import sample.model.weapons.Hand;
 import sample.scenes.Navigation;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Controller {
@@ -50,6 +54,12 @@ public class Controller {
     private boolean paused = false;
     private String timeString = " ";
     private Boolean load = false;
+
+    Image runnerUpIdle, runnerDownIdle, runnerRightIdle, runnerLeftIdle,
+            runnerUpGif, runnerDownGif, runnerLeftGif, runnerRightGif;
+
+    ImageView rUpIdle, rDownIdle, rRightIdle, rLeftIdle,
+            rUpGif, rDownGif, rLeftGif, rRightGif;
 
     private AnimationTimer timer = new AnimationTimer() {
         private long timestamp;
@@ -95,6 +105,22 @@ public class Controller {
         savedGames.addAll(Main.savedGames);
         ObservableList<String> ol = FXCollections.observableArrayList(savedGames);
         lv.setItems(ol);
+
+        try {
+            runnerUpIdle = new Image(new FileInputStream("res/Photos/runnerIdle.png"));
+            runnerDownIdle = new Image(new FileInputStream("res/Photos/runnerDownIdle.png"));
+            runnerRightIdle = new Image(new FileInputStream("res/Photos/runnerRightIdle.png"));
+            runnerLeftIdle = new Image(new FileInputStream("res/Photos/runnerLeftIdle.png"));
+            runnerUpGif = new Image(new FileInputStream("res/Photos/runnerUpGif.gif"));
+            runnerDownGif = new Image(new FileInputStream("res/Photos/runnerDownGif.gif"));
+            runnerLeftGif = new Image(new FileInputStream("res/Photos/runnerLeftGif.gif"));
+            runnerRightGif = new Image(new FileInputStream("res/Photos/runnerRightGif.gif"));
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         maze.setPane(pane);
         maze.setLblHealth(lblHealth);
         maze.setLblMoves(lblMoves);
@@ -105,12 +131,16 @@ public class Controller {
 
     public void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.D) {
+            maze.getRunner().setImage(runnerRightGif);
             game.keyDPressed();
         } else if (keyEvent.getCode() == KeyCode.A) {
+            maze.getRunner().setImage(runnerLeftGif);
             game.keyAPressed();
         } else if (keyEvent.getCode() == KeyCode.W) {
+            maze.getRunner().setImage(runnerUpGif);
             game.keyWPressed();
         } else if (keyEvent.getCode() == KeyCode.S) {
+            maze.getRunner().setImage(runnerDownGif);
             game.keySPressed();
         } else if (keyEvent.getCode() == KeyCode.NUMPAD1 || keyEvent.getCode() == KeyCode.DIGIT1) {
             maze.setWeapon(new Hand());
@@ -138,7 +168,18 @@ public class Controller {
         }
     }
 
-    public void onBtnSaveClick(ActionEvent actionEvent) {
+    public void onKeyReleased(KeyEvent keyEvent) {
+        if(game.getGameState() instanceof KeyDPressed)
+            maze.getRunner().setImage(runnerRightIdle);
+        else if(game.getGameState() instanceof KeyAPressed)
+            maze.getRunner().setImage(runnerLeftIdle);
+        else if(game.getGameState() instanceof KeyWPressed)
+            maze.getRunner().setImage(runnerUpIdle);
+        else if(game.getGameState() instanceof KeySPressed)
+            maze.getRunner().setImage(runnerDownIdle);
+    }
+
+        public void onBtnSaveClick(ActionEvent actionEvent) {
         FileClass fileClass = new FileClass();
         String name = Diag.showDiag();
         if (name != null) {

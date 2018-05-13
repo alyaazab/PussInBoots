@@ -57,7 +57,7 @@ public class KeyDPressed implements GameState {
             tempMap[tempRow][tempCol] = 'E';
             maze.setGameMap(tempMap);
 
-            maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 20);
+            maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 22);
 
             maze.updateHealth();
             if(runner.getHealth() == 0){
@@ -70,7 +70,7 @@ public class KeyDPressed implements GameState {
             System.out.println("You can move here");
             tempCol++;
             maze.setCol(tempCol);
-            maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 20);
+            maze.getRunner().setLayoutX(maze.getRunner().getLayoutX() + 22);
             if(tempMap[tempRow][tempCol] == 'C'){
                 maze.saveMemento();
             }

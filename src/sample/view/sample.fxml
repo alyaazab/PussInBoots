@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" prefHeight="647.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="647.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
     <children>
         <Button fx:id="btnSave" layoutX="752.0" layoutY="22.0" mnemonicParsing="false" onAction="#onBtnSaveClick" text="Save" />
         <Label fx:id="lblCoins" layoutX="701.0" layoutY="77.0" prefHeight="53.0" prefWidth="85.0" text="Label" />
@@ -19,7 +19,7 @@
             <Button layoutX="67.0" layoutY="59.0" mnemonicParsing="false" onAction="#onBtnResumeClick" text="Resume" />
             <Label fx:id="lblHealthMenu" layoutX="163.0" layoutY="175.0" text="Health" />
             <Label fx:id="lblMovesMenu" layoutX="314.0" layoutY="167.0" text="Moves" />
-            <Label layoutX="170.0" layoutY="307.0" text="Buller" />
+            <Label layoutX="170.0" layoutY="307.0" text="Bullets" />
             <Label fx:id="lblTimerMenu" layoutX="328.0" layoutY="299.0" text="Timer" />
          </children>
       </Pane>
